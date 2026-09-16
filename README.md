@@ -1,0 +1,126 @@
+# Playwright Beyond the Happy Path
+
+Slides and demo project for the 2026 Playwright talk.
+**.NET User Group Karlsruhe · 24 September 2026.**
+An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-11-2025-playwright).
+
+**E2E tests, accessibility and MCP in practice.** Sven Hennessen · vensas GmbH
+
+## Repository structure
+
+```
+├── slides/
+│   ├── playwright-beyond-the-happy-path.yaml   the deck, input for the vensas-doc-generator
+│   ├── playwright-beyond-the-happy-path.pdf    the deck, 24 slides
+│   ├── playwright-demo-script.yaml             the stage script, input
+│   └── playwright-demo-script.pdf              the stage script, 3 pages
+├── docs/
+│   ├── playwright-2026-talk.md                 research notes (stops at 1.61)
+│   └── playwright-talk-abstract-de.md          German abstract for the call for papers
+├── src/
+│   ├── deploy-or-die-frontend/                 React app and the TypeScript tests
+│   ├── deploy-or-die-backend/                  ASP.NET Core API and PostgreSQL
+│   └── deploy-or-die-dotnet-tests/             the same tests in C# with xUnit
+└── generate-docs.sh                            makes both PDFs
+```
+
+## Slides and demo script
+
+Two documents, both made with the [vensas-doc-generator](../vensas-doc-generator):
+
+| Document | Type | Content |
+|---|---|---|
+| `playwright-beyond-the-happy-path` | `slides` | The deck. 24 slides, dark theme. One slide for each talking point. |
+| `playwright-demo-script` | `report` | The stage script. The demos as 6 sessions, with brief steps and a command reference. |
+
+The YAML files are the single source of truth. One command generates both PDFs:
+
+```sh
+./generate-docs.sh              # both documents
+./generate-docs.sh slides       # only the deck
+./generate-docs.sh script       # only the demo script
+```
+
+The script expects the [vensas-doc-generator](../vensas-doc-generator) beside this
+repository. Set `DOC_GENERATOR_DIR` to give a different path.
+
+The demo script refers to slides by number. **If you change the deck, correct the demo script
+too** — see the checklist in `CLAUDE.md`.
+
+## Demo project: "Deploy or Die"
+
+A deployment game. Each deployment has a 50% success rate. After a deployment you must wait
+30 seconds — this cooldown is the subject of the Clock API demo.
+
+### Frontend and TypeScript tests
+
+```sh
+cd src/deploy-or-die-frontend
+pnpm install
+npx playwright install chromium
+
+pnpm run dev                 # the app on http://localhost:3000
+pnpm run test:mocked         # 17 tests, about 10 s, no containers
+pnpm run test:integration    # 4 tests against the real backend, about 4 min
+pnpm run test:ui             # UI mode
+pnpm run test:report         # the HTML report with Speedboard and Timeline
+```
+
+### Backend
+
+The integration tests start the backend and PostgreSQL with Docker Compose. To run the
+backend alone:
+
+```sh
+cd src/deploy-or-die-backend
+docker compose up -d
+cd DeployOrDie.Api && dotnet run     # the API on http://localhost:5000
+```
+
+### C# tests
+
+The frontend must run on port 3000.
+
+```sh
+cd src/deploy-or-die-dotnet-tests/DeployOrDie.E2E.Tests
+dotnet build
+pwsh bin/Debug/net10.0/playwright.ps1 install chromium
+dotnet test                  # 5 tests, 1 red by design
+```
+
+## One test fails on purpose
+
+Both `pnpm run test:mocked` and the C# `dotnet test` report **one failed test**: the WCAG scan in
+`tests/accessibility.spec.ts`. This is intentional and it is the accessibility demo.
+
+`src/deploy-or-die-frontend/src/a11yMode.ts` holds the switch:
+
+```ts
+export const ACCESSIBLE_MODE = false;
+```
+
+With `false` the deploy form has three real WCAG defects:
+
+| axe-core rule | Defect | WCAG |
+|---|---|---|
+| `label` | The environment field has no label | 4.1.2 |
+| `button-name` | The history button has only an icon and no name | 4.1.2 |
+| `color-contrast` | The hint text has a contrast of 1.9:1, and 4.5:1 is needed | 1.4.3 |
+
+Set the value to `true` and all 17 tests pass. This is the red to green step on stage.
+
+## Versions
+
+| Component | Version |
+|---|---|
+| `@playwright/test` | 1.63.0 |
+| `@axe-core/playwright` | 4.13.0 |
+| `Microsoft.Playwright.Xunit.v3` | 1.62.0 |
+| `Deque.AxeCore.Playwright` | 4.13.0 |
+| Backend | .NET 9 |
+| C# tests | .NET 10, Microsoft Testing Platform |
+
+## Note
+
+Made and tested on macOS with Podman. The Testcontainers network behaviour can be different
+with Docker.

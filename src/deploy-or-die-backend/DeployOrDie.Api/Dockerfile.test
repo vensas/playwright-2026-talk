@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 5000
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY . .
+
+FROM build AS publish
+WORKDIR /src
+RUN dotnet publish "DeployOrDie.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false --nologo
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+# Remove Development appsettings to ensure environment variables are prioritized
+RUN rm -f appsettings.Development.json || true
+# Keep base appsettings.json as it's needed for minimal config
+ENTRYPOINT ["dotnet", "DeployOrDie.Api.dll"]

@@ -1,0 +1,162 @@
+type: report
+number: DS-20260915-01
+date: '2026-09-24'
+output_file: playwright-demo-script
+type_label: Demo Script
+title: Demo Script
+subject_name: Playwright Beyond the Happy Path
+intro: |
+  <p>The stage script for the talk. The demos run as <strong>6 continuous sessions</strong>.
+  Each session keeps its terminal and its browser open, and each numbered step is one slide.
+  The number in brackets is the slide number.</p>
+  <p>All sessions together need about <strong>53 minutes</strong>. Do the preparation
+  before the talk starts. All paths are relative to
+  <code>src/deploy-or-die-frontend</code>, if no other path is given.</p>
+sections:
+- title: Preparation — 10 min, before the talk
+  content: |
+    <ol>
+      <li>Start the containers one time, so that the image build is not on stage:
+          <code>pnpm run test:integration</code>. Keep the report — you need it in session B.</li>
+      <li>Make sure that <code>ACCESSIBLE_MODE</code> is <code>false</code> in
+          <code>src/a11yMode.ts</code>. The accessibility demo needs this.</li>
+      <li>Start the dev server: <code>pnpm run dev</code>. It must stay up for all sessions.</li>
+      <li>Install the browser for the C# tests one time:
+        <code>pwsh bin/Debug/net10.0/playwright.ps1 install chromium</code> in
+        <code>src/deploy-or-die-dotnet-tests/DeployOrDie.E2E.Tests</code>.</li>
+      <li>Open three terminals: dev server, test runner, and one spare.</li>
+    </ol>
+    <p><strong>Watch out:</strong> the container build needs about 4 minutes. Never do it on stage.</p>
+- title: Session 0 · Frame — Slides 2–3 · 2 min
+  content: |
+    <ol>
+      <li><strong>[2]</strong> <code>npx playwright --version</code> — show 1.63.0. Say that
+          the .NET bindings are at 1.62.0.</li>
+      <li><strong>[3]</strong> Show the app: the name field, the deploy button and the
+          result message.</li>
+      <li>Deploy one time and let the audience see the 30 second cooldown.</li>
+    </ol>
+    <p><strong>Watch out:</strong> the audience must see the cooldown here. Slide 13 refers
+    back to this moment.</p>
+- title: Session A · Fundamentals — Slides 4–7 · 10 min
+  content: |
+    <ol>
+      <li><strong>[4]</strong> <code>pnpm run test:mocked locators</code> — green. Then delete
+          one <code>await</code> and show the failure message.</li>
+      <li><strong>[5]</strong> <code>pnpm run test:ui</code> — watch mode, pick locator with
+          the mouse, time travel.</li>
+      <li><strong>[6]</strong> <code>npx playwright codegen http://localhost:3000</code> —
+          record one deployment. Name what you must correct: the hard coded name, and the
+          missing negative case.</li>
+      <li><strong>[7]</strong> <code>npx playwright show-trace test-results/*/trace.zip</code>
+          — step back in time, then change to the ARIA tab. The ARIA tab is new in 1.63.</li>
+    </ol>
+    <p><strong>Watch out:</strong> close UI mode and codegen before session B. Each of them
+    keeps a browser and a port.</p>
+- title: Session B · Mock or real backend — Slides 8–12 · 13 min
+  content: |
+    <ol>
+      <li><strong>[8]</strong> <code>pnpm run test:mocked</code> — 17 tests in about 10
+          seconds, with no backend. One test is red. Say that this is on purpose, and that
+          session D explains it.</li>
+      <li><strong>[9]</strong> <code>pnpm run test:integration</code> — the containers are
+          warm, then 4 tests run against the real ASP.NET Core API and PostgreSQL.</li>
+      <li><strong>[10]</strong> Show <code>{ lock: 'deploy-db' }</code> in
+          <code>tests/deploy-integration.spec.ts</code>. Run
+          <code>npx playwright test --project=integration --workers=4</code> and show in the
+          Timeline that the locked tests do not overlap.</li>
+      <li><strong>[11]</strong> <code>pnpm run test:report</code> — open <strong>Speedboard</strong>,
+          then <strong>Timeline</strong>. Most of the time is the container start, not the tests.</li>
+      <li><strong>[12]</strong> <code>pnpm run test:retries</code> — this turns the retries on
+          and the red accessibility test retries twice. Point at the last two lines: both
+          retries run <em>after</em> the whole suite, one after the other. Then comment
+          <code>retryStrategy</code> out, run again, and show that the first retry now runs
+          in the middle of the suite. Put the line back.</li>
+    </ol>
+    <p><strong>Watch out:</strong> do not remove the lock on stage to force a failure. These
+    four tests write no shared row, thus they do not reliably conflict. Show the Timeline instead.</p>
+- title: Session C · Time control — Slide 13 · 3 min
+  content: |
+    <ol>
+      <li><strong>[13]</strong> Point back to the cooldown from session 0. A test must not wait 30 seconds.</li>
+      <li><code>pnpm run test:clock</code> — 3 tests in about 2 seconds.</li>
+      <li>Walk through the three calls: <code>install()</code>, then <code>runFor(5_000)</code>,
+          then <code>fastForward('00:30')</code>.</li>
+    </ol>
+    <p><strong>Watch out:</strong> <code>install()</code> must be the first clock call, and it
+    must come before <code>page.goto()</code>.</p>
+- title: Session D · Accessibility — Slides 14–15 · 7 min
+  content: |
+    <ol>
+      <li><strong>[14]</strong> <code>pnpm run test:a11y</code> — red. Three rules fail:
+          <code>button-name</code>, <code>color-contrast</code> and <code>label</code>.</li>
+      <li>Open the report and show the attached <code>axe-results.json</code>.</li>
+      <li>Set <code>ACCESSIBLE_MODE = true</code> in <code>src/a11yMode.ts</code>. Run again
+          — green.</li>
+      <li><strong>[15]</strong> Change the <code>h1</code> to an <code>h2</code> in
+          <code>src/App.tsx</code>. The axe test stays green, but the ARIA snapshot fails.
+          Say why the two checks find different faults.</li>
+      <li>Undo both changes.</li>
+    </ol>
+    <p><strong>Watch out:</strong> set <code>ACCESSIBLE_MODE</code> back to <code>false</code>
+    after the talk, or the demo is gone the next time.</p>
+- title: Session E · .NET — Slides 16–18 · 9 min
+  content: |
+    <ol>
+      <li><strong>[16]</strong> The dev server from the preparation must still run on port 3000.
+          <code>dotnet test</code> — 5 tests, 1 red. Put <code>DeployTests.cs</code> and
+          <code>tests/cooldown.spec.ts</code> side by side. Same locators, same auto-wait, same
+          Clock API. Only the names use the .NET style.</li>
+      <li><strong>[17]</strong> Walk the two boxes. Say the one sentence that matters: the browser
+          API is the same, the test runner is not. Point back to slide 10 and slide 12 — test locks
+          and isolated retries are Playwright Test only. Then run
+          <code>npx playwright codegen --target csharp-xunit http://localhost:3000</code>
+          and record one click — the recorder writes C#.</li>
+      <li><strong>[18]</strong> Show the red <code>AccessibilityTests.cs</code>. Both languages
+          report the same three rules: <code>button-name</code>, <code>color-contrast</code> and
+          <code>label</code>. Put the C# output next to the TypeScript output from session D.</li>
+    </ol>
+    <p><strong>Watch out:</strong> <code>global.json</code> selects the Microsoft Testing Platform
+    runner. Without it, <code>dotnet test</code> fails on the .NET 10 SDK. The C# tests need their
+    own browser: <code>pwsh bin/Debug/net10.0/playwright.ps1 install chromium</code>.</p>
+- title: Session F · AI and agents — Slides 19–21 · 9 min
+  content: |
+    <ol>
+      <li><strong>[19]</strong> <code>npx playwright mcp</code> — the server is part of
+          Playwright since 1.62.</li>
+      <li>Give the agent one task: explore <code>http://localhost:3000</code>. Let it find
+          the cooldown with no hint from you.</li>
+      <li><strong>[20]</strong> Show <code>npx playwright init-agents --loop=claude</code> and
+          name the three agents: planner, generator, healer.</li>
+      <li>Change the button label from <code>Deploy Now</code> to <code>Ship It</code> in
+          <code>src/App.tsx</code>. Let the healer repair the test.</li>
+      <li><strong>[21]</strong> Show the three defects in the wrong example on the slide. Open
+          <code>tests/locators.spec.ts</code> next to it. Close with the rule: the agent
+          explores, the human reviews.</li>
+    </ol>
+    <p><strong>Watch out:</strong> this session needs network and a model. Record a fallback
+    video before the talk.</p>
+tables:
+- title: Command reference
+  columns:
+  - Session
+  - Command
+  rows:
+  - - Preparation
+    - pnpm run test:integration && pnpm run dev
+  - - A · Fundamentals
+    - pnpm run test:mocked locators · pnpm run test:ui · npx playwright codegen http://localhost:3000
+  - - A · Fundamentals
+    - npx playwright show-trace test-results/*/trace.zip
+  - - B · Mock or real
+    - pnpm run test:mocked · pnpm run test:integration · pnpm run test:retries · pnpm run test:report
+  - - B · Mock or real
+    - npx playwright test --project=integration --workers=4
+  - - C · Time control
+    - pnpm run test:clock
+  - - D · Accessibility
+    - pnpm run test:a11y
+  - - E · .NET
+    - dotnet test (in src/deploy-or-die-dotnet-tests/DeployOrDie.E2E.Tests) — 5 tests, 1 red
+  - - F · AI and agents
+    - npx playwright mcp · npx playwright init-agents --loop=claude

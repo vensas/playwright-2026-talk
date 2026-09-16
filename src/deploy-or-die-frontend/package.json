@@ -1,0 +1,42 @@
+{
+  "name": "deploy-or-die-frontend",
+  "version": "1.0.0",
+  "description": "Deploy or Die game frontend",
+  "scripts": {
+    "dev": "rspack serve",
+    "build": "rspack build",
+    "preview": "rspack preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:mocked": "SKIP_CONTAINERS=1 playwright test --project=mocked",
+    "test:a11y": "SKIP_CONTAINERS=1 playwright test --project=mocked accessibility",
+    "test:clock": "SKIP_CONTAINERS=1 playwright test --project=mocked cooldown",
+    "test:retries": "SKIP_CONTAINERS=1 playwright test --project=mocked --retries=2",
+    "test:integration": "playwright test --project=integration",
+    "test:trace": "playwright show-trace"
+  },
+  "dependencies": {
+    "primeicons": "^7.0.0",
+    "primereact": "^10.8.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@rspack/cli": "^1.0.0",
+    "@rspack/core": "^1.0.0",
+    "@testcontainers/postgresql": "^11.8.1",
+    "@types/node": "^24.10.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0",
+    "testcontainers": "^11.8.1",
+    "typescript": "^5.6.2",
+    "@axe-core/playwright": "^4.13.0"
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
+}
