@@ -45,9 +45,9 @@ slides:
   - type: table
     rows:
     - key: Frontend
-      value: React 18, PrimeReact, Rspack — port 3000
+      value: React 19, PrimeReact, Rspack — port 3000
     - key: Backend
-      value: ASP.NET Core minimal API, .NET 9 — POST /api/deploy
+      value: ASP.NET Core minimal API, .NET 10 — POST /api/deploy
     - key: Database
       value: PostgreSQL 16, started by Docker Compose
     - key: Tests

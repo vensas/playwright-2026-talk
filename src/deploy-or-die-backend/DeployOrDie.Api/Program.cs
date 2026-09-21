@@ -1,7 +1,7 @@
 using DeployOrDie.Api.Data;
 using DeployOrDie.Api.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 

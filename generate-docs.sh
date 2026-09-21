@@ -11,7 +11,7 @@
 # variable DOC_GENERATOR_DIR to give a different path.
 #
 # The deck and the demo script are coupled. If you change one, read the
-# checklist "Keep the deck and the demo script in sync" in CLAUDE.md.
+# checklist "Keep the deck and the demo script in sync" in AGENTS.md.
 
 set -euo pipefail
 

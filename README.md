@@ -13,7 +13,7 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 │   ├── playwright-beyond-the-happy-path.yaml   the deck, input for the vensas-doc-generator
 │   ├── playwright-beyond-the-happy-path.pdf    the deck, 24 slides
 │   ├── playwright-demo-script.yaml             the stage script, input
-│   └── playwright-demo-script.pdf              the stage script, 3 pages
+│   └── playwright-demo-script.pdf              the stage script, 4 pages
 ├── docs/
 │   ├── playwright-2026-talk.md                 research notes (stops at 1.61)
 │   └── playwright-talk-abstract-de.md          German abstract for the call for papers
@@ -45,7 +45,7 @@ The script expects the [vensas-doc-generator](../vensas-doc-generator) beside th
 repository. Set `DOC_GENERATOR_DIR` to give a different path.
 
 The demo script refers to slides by number. **If you change the deck, correct the demo script
-too** — see the checklist in `CLAUDE.md`.
+too** — see the checklist in `AGENTS.md`.
 
 ## Demo project: "Deploy or Die"
 
@@ -117,10 +117,14 @@ Set the value to `true` and all 17 tests pass. This is the red to green step on 
 | `@axe-core/playwright` | 4.13.0 |
 | `Microsoft.Playwright.Xunit.v3` | 1.62.0 |
 | `Deque.AxeCore.Playwright` | 4.13.0 |
-| Backend | .NET 9 |
+| Backend | .NET 10 |
 | C# tests | .NET 10, Microsoft Testing Platform |
 
 ## Note
 
 Made and tested on macOS with Podman. The Testcontainers network behaviour can be different
 with Docker.
+
+The bundled Firefox fails with "Could not find profile folder" when run from a terminal app
+without macOS Full Disk Access (for example VS Code's integrated terminal) — see the note in
+`AGENTS.md`. The `firefox` project is not part of the stage demo.

@@ -1,7 +1,5 @@
-> **Sync Notice:** This file is mirrored in `CLAUDE.md`. When updating this file, also update `CLAUDE.md` to keep instructions consistent across AI assistants.
-
 DO write all slides, code and comments in ASD-STE100 (Simplified Technical English).
-DO keep `AGENTS.md`, `CLAUDE.md` and `README.md` up to date with the latest implementations.
+DO keep `AGENTS.md` and `README.md` up to date with the latest implementations.
 DO regenerate the PDF with `./generate-docs.sh` after each change to a document YAML.
 DO keep the deck and the demo script in sync — see "Keep the deck and the demo script in sync".
 DO ask before you change the talk content — the speaker decides what goes on a slide.
@@ -144,8 +142,8 @@ wait 30 seconds.
 
 ```
 src/
-  deploy-or-die-frontend/        React 18 + PrimeReact + Rspack, and the TypeScript tests
-  deploy-or-die-backend/         ASP.NET Core minimal API (net9.0) + PostgreSQL 16
+  deploy-or-die-frontend/        React 19 + PrimeReact + Rspack, and the TypeScript tests
+  deploy-or-die-backend/         ASP.NET Core minimal API (net10.0) + PostgreSQL 16
   deploy-or-die-dotnet-tests/    xUnit v3 + Microsoft.Playwright.Xunit.v3 (net10.0)
 ```
 
@@ -157,7 +155,8 @@ src/
 | `@axe-core/playwright` | 4.13.0 | WCAG 2.2 AA scan |
 | `Microsoft.Playwright.Xunit.v3` | 1.62.0 | The .NET bindings follow Node, one version behind |
 | `Deque.AxeCore.Playwright` | 4.13.0 | axe-core for the C# accessibility test |
-| Backend | net9.0 | The API |
+| `primereact` | 10.9.7 | Pinned below 11 — v11 is a ground-up rewrite (headless components, new theme provider, drops the classic CSS theme files). Do not bump past the 10.x line without a full re-theme |
+| Backend | net10.0 | The API |
 | C# tests | net10.0 | Microsoft Testing Platform |
 
 ### Two switches drive the demos
@@ -219,6 +218,20 @@ pwsh bin/Debug/net10.0/playwright.ps1 install chromium
 
 The project was made and tested on macOS with Podman. `tests/testcontainers.ts` switches to
 `podman compose` when Testcontainers fails, and it disables Ryuk for Podman.
+
+### Known issue: Firefox fails from an editor's integrated terminal (macOS)
+
+The bundled Firefox from `npx playwright install firefox` fails every launch with "Could not
+find profile folder" when the shell it runs in belongs to an app without macOS Full Disk
+Access — for example VS Code's integrated terminal. It works fine from a terminal app that
+already has Full Disk Access (for example Ghostty). This is
+[microsoft/playwright#42768](https://github.com/microsoft/playwright/issues/42768): the
+bundled Firefox shares its app-data folder with the real Firefox, and macOS TCC protects
+that folder — access is granted per responsible app, not per user.
+
+Fix: System Settings → Privacy & Security → Full Disk Access → enable your editor's app (for
+example "Visual Studio Code"), or run `pnpm run test` from a terminal that already has the
+grant. Not a project bug, and the `firefox` project is not part of the stage demo.
 
 ## Research notes
 
