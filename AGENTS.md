@@ -95,10 +95,15 @@ and `sections[].content` accepts HTML.
   with a `heading` block — this makes two headings.
 - Block types: `heading`, `text`, `card-grid`, `flow`, `pricing`, `stats`, `table`, `steps`,
   `box`, `list`, `callout`, `cta`, `columns`, `code`, `mermaid`, `image`.
-- Each slide ends with a `callout` of variant `info`. This is the stage instruction for
-  that slide. Keep it to one or two sentences. Use title `Demo` when something runs on
-  stage, and title `Walkthrough` when the speaker only shows and explains code. Every
-  slide from 2 to 21 is a `Demo` — each one was run before it went on a slide.
+- Each slide ends with a `callout` of variant `info`. Keep it to one or two sentences. Use
+  title `Demo` when something runs on stage, and title `Walkthrough` when the speaker only
+  shows and explains code.
+- **Do not address the speaker in this callout.** Write a generic instruction that the
+  speaker follows on stage and that a listener can also use later to do the same thing.
+  Start with the command when there is one. Write "pnpm run test:ui — pick a locator with
+  the mouse", not "Open UI mode and show the locator picker". Do not write "show", "tell
+  the story" or "ask the audience".
+- Each `Demo` was run before it went on a slide. Do not write a `Demo` that you did not run.
 - **Watch the slide height.** A 16:9 slide holds about 18 lines of code plus two small
   blocks. If a slide has more, the title or the last block is cut off. Always look at the
   generated PDF page after a change.
