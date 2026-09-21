@@ -16,7 +16,7 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SLIDES_DIR="$REPO_DIR/slides"
+DOCS_DIR="$REPO_DIR/docs"
 GENERATOR_DIR="${DOC_GENERATOR_DIR:-$REPO_DIR/../vensas-doc-generator}"
 
 DECK="playwright-beyond-the-happy-path"
@@ -50,8 +50,8 @@ GENERATOR_DIR="$(cd "$GENERATOR_DIR" && pwd)"
 failed=0
 
 for name in "${TARGETS[@]}"; do
-  yaml="$SLIDES_DIR/$name.yaml"
-  pdf="$SLIDES_DIR/$name.pdf"
+  yaml="$DOCS_DIR/$name.yaml"
+  pdf="$DOCS_DIR/$name.pdf"
 
   if [ ! -f "$yaml" ]; then
     echo "✗ $name — no input file at $yaml" >&2
@@ -65,13 +65,13 @@ for name in "${TARGETS[@]}"; do
   # layouts, assets and company configuration from there.
   if [ "$VERBOSE" -eq 1 ]; then
     ( cd "$GENERATOR_DIR" && npm run generate:file -- "$yaml" \
-        --output-dir "$SLIDES_DIR" --working-dir "$SLIDES_DIR" )
+        --output-dir "$DOCS_DIR" --working-dir "$DOCS_DIR" )
     status=$?
   else
     log="$(mktemp)"
     set +e
     ( cd "$GENERATOR_DIR" && npm run generate:file -- "$yaml" \
-        --output-dir "$SLIDES_DIR" --working-dir "$SLIDES_DIR" ) >"$log" 2>&1
+        --output-dir "$DOCS_DIR" --working-dir "$DOCS_DIR" ) >"$log" 2>&1
     status=$?
     set -e
   fi
@@ -112,4 +112,4 @@ if [ $failed -ne 0 ]; then
 fi
 
 echo
-echo "✓ Written to $SLIDES_DIR"
+echo "✓ Written to $DOCS_DIR"

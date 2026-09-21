@@ -51,7 +51,7 @@ Both documents use the **vensas-doc-generator** (`../vensas-doc-generator`). The
 use Marp any more. The old Marp deck was deleted.
 
 ```
-slides/
+docs/
   playwright-beyond-the-happy-path.yaml   the deck — type: slides, 24 slides, theme dark
   playwright-beyond-the-happy-path.pdf    generated, do not edit
   playwright-demo-script.yaml             the stage script — type: report, 8 sections
@@ -107,8 +107,8 @@ and `sections[].content` accepts HTML.
 
 ## Keep the deck and the demo script in sync
 
-`slides/playwright-beyond-the-happy-path.yaml` (the deck) and
-`slides/playwright-demo-script.yaml` (the stage script) are **coupled**. The demo script
+`docs/playwright-beyond-the-happy-path.yaml` (the deck) and
+`docs/playwright-demo-script.yaml` (the stage script) are **coupled**. The demo script
 refers to slides by number. If you change one file and not the other, the speaker reads a
 step for a slide that is no longer there.
 

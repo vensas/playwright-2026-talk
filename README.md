@@ -9,12 +9,11 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 ## Repository structure
 
 ```
-├── slides/
+├── docs/
 │   ├── playwright-beyond-the-happy-path.yaml   the deck, input for the vensas-doc-generator
 │   ├── playwright-beyond-the-happy-path.pdf    the deck, 24 slides
 │   ├── playwright-demo-script.yaml             the stage script, input
-│   └── playwright-demo-script.pdf              the stage script, 4 pages
-├── docs/
+│   ├── playwright-demo-script.pdf              the stage script, 4 pages
 │   ├── playwright-2026-talk.md                 research notes (stops at 1.61)
 │   └── playwright-talk-abstract-de.md          German abstract for the call for papers
 ├── src/
