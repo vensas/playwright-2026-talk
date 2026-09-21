@@ -34,30 +34,6 @@ slides:
           <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Consulting and development of <strong style="color:var(--text-accent);">business software</strong> for medium-sized companies</span></div>
           <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Away from the computer — <strong style="color:var(--text-accent);">hiking</strong>, <strong style="color:var(--text-accent);">cycling</strong> or the <strong style="color:var(--text-accent);">racing simulator</strong></span></div>
           </div>
-- id: what-changed
-  layout: content
-  title: What changed since 2025
-  blocks:
-  - type: text
-    text: The 2025 talk showed a test runner. Playwright 1.63 is more than a test runner. These are the parts that are new for you.
-  - type: card-grid
-    columns: 3
-    cards:
-    - variant: trust
-      tag: 1.61 – 1.63
-      tag_style: opt
-      title: Control
-      text: Test locks, isolated retries and the Clock API make a test run stable and fast.
-    - variant: accent
-      title: Accessibility
-      text: ARIA snapshots and axe-core make WCAG a gate in the pipeline.
-    - variant: quality
-      title: Agents
-      text: The MCP server and the Test Agents write and repair tests.
-  - type: callout
-    variant: info
-    title: Demo
-    text: npx playwright --version — this demo uses 1.63.0. The .NET bindings are at 1.62.0.
 - id: demo-app
   layout: content
   title: 'The demo app: Deploy or Die'
@@ -73,7 +49,9 @@ slides:
     - key: Database
       value: PostgreSQL 16, started by Docker Compose
     - key: Tests
-      value: TypeScript in src/deploy-or-die-frontend/tests, C# in src/deploy-or-die-dotnet-tests
+      value: TypeScript with Playwright Test, C# with xUnit
+    - key: Playwright
+      value: 1.63.0 for TypeScript, 1.62.0 for .NET — the bindings follow Node, one version behind
   - type: callout
     variant: info
     title: Demo
