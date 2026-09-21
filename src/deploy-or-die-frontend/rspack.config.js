@@ -46,7 +46,8 @@ module.exports = {
     }),
   ],
   devServer: {
-    port: 3000,
+    // The Aspire AppHost sets PORT. Without it the port stays 3000.
+    port: Number(process.env.PORT) || 3000,
     hot: true,
     open: false,
   },

@@ -19,7 +19,8 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 ├── src/
 │   ├── deploy-or-die-frontend/                 React app and the TypeScript tests
 │   ├── deploy-or-die-backend/                  ASP.NET Core API and PostgreSQL
-│   └── deploy-or-die-dotnet-tests/             the same tests in C# with xUnit
+│   ├── deploy-or-die-dotnet-tests/             the same tests in C# with xUnit
+│   └── deploy-or-die-apphost/                  Aspire AppHost, starts all three at once
 └── generate-docs.sh                            makes both PDFs
 ```
 
@@ -75,6 +76,19 @@ cd src/deploy-or-die-backend
 docker compose up -d
 cd DeployOrDie.Api && dotnet run     # the API on http://localhost:5000
 ```
+
+### All three at once, with Aspire
+
+The Aspire AppHost starts PostgreSQL, the backend and the frontend together. Use it for a
+manual demo — the tests do not need it.
+
+```sh
+cd src/deploy-or-die-apphost
+dotnet run                           # or: aspire run
+```
+
+The ports stay the same as above: the frontend on 3000, the backend on 5000. The dashboard
+prints its own URL with a login token. Aspire stops the containers again when you stop it.
 
 ### C# tests
 

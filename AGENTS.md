@@ -23,7 +23,7 @@ An update of the Webworker Meetup Saar 11/2025 talk (`../webworker-meetup-saar-1
 
 | Block | Slides | Subject |
 |---|---|---|
-| Frame | 1–3 | Cover, what changed since 2025, the demo app |
+| Frame | 1–3 | Cover, about me, the demo app |
 | A · Fundamentals | 4–7 | Locators and auto-wait, UI mode, codegen, traces |
 | B · Mock or real | 8–12 | `page.route`, Testcontainers, test locks, Speedboard, isolated retries |
 | C · Time control | 13 | Clock API |
@@ -150,7 +150,26 @@ src/
   deploy-or-die-frontend/        React 19 + PrimeReact + Rspack, and the TypeScript tests
   deploy-or-die-backend/         ASP.NET Core minimal API (net10.0) + PostgreSQL 16
   deploy-or-die-dotnet-tests/    xUnit v3 + Microsoft.Playwright.Xunit.v3 (net10.0)
+  deploy-or-die-apphost/         Aspire AppHost (net10.0), starts all three at once
 ```
+
+### The Aspire AppHost
+
+`src/deploy-or-die-apphost` starts PostgreSQL, the backend and the frontend with one
+command (`dotnet run`, or `aspire run`). It is for a manual demo. No test needs it, and
+`generate-docs.sh` does not use it. It is part of `src/deploy-or-die-backend/DeployOrDie.sln`.
+
+- **Aspire has no Rspack resource type.** The frontend uses the generic
+  `AddJavaScriptApp(...).WithPnpm()`, which runs the `dev` script — and that script starts
+  `rspack serve`. `AddViteApp` is for Vite and does not fit here.
+- **The ports stay fixed**: frontend 3000, backend 5000, both with `isProxied: false`. Do
+  not let Aspire choose them. The frontend reads the backend URL in the browser from
+  `window.BACKEND_URL` and falls back to `http://localhost:5000`, and the specs, the C#
+  tests and slide 3 all name these two ports.
+- `rspack.config.js` reads `process.env.PORT` and falls back to 3000, because the AppHost
+  gives the port in `PORT`.
+- The backend gets `ConnectionStrings__DefaultConnection` from the Aspire database
+  resource. `db.Database.Migrate()` then makes the database and the schema at startup.
 
 ### Versions
 
