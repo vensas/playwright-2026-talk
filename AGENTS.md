@@ -91,8 +91,15 @@ and `sections[].content` accepts HTML.
 ### Slide YAML rules
 
 - Deck level `theme: dark`. The theme is not set for each slide.
-- A `content` slide renders its `title` as the big heading. Do **not** also start `blocks`
-  with a `heading` block — this makes two headings.
+- A `content` slide renders its `title` as the big heading. Do **not** give a slide a `title`
+  and also a `heading` block that is not the first block — this makes two headings. When the
+  **first** block is a `heading`, the generator does not print the slide `title`. Thus a slide
+  uses one of the two, not both.
+- **The six slides from real projects carry a kicker.** They have no slide `title`. Their
+  first block is a `heading` with `label: From a real project` and the title. The label prints
+  above the title in small orange capitals, and the heading keeps one rule. Do not use the
+  `label` of a `text` block for this — a `text` label prints a second rule below the rule of
+  the title.
 - Block types: `heading`, `text`, `card-grid`, `flow`, `pricing`, `stats`, `table`, `steps`,
   `box`, `list`, `callout`, `cta`, `columns`, `code`, `mermaid`, `image`.
 - Each slide ends with a `callout` of variant `info`. Keep it to one or two sentences. Use

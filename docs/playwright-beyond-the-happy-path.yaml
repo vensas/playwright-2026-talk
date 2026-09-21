@@ -106,10 +106,10 @@ slides:
     text: pnpm run test:ui — pick a locator with the mouse, then change the test and let it run again.
 - id: test-folder
   layout: content
-  title: Keep the tests in their own folder
   blocks:
-  - type: text
-    text: Some teams put the tests next to the components, and then they set testDir to the source folder. This looks logical. But Playwright reads all files in testDir when it starts, and this needs more memory.
+  - type: heading
+    label: From a real project
+    title: Keep the tests in their own folder
   - type: code
     language: typescript
     filename: playwright.config.ts
@@ -130,7 +130,7 @@ slides:
   - type: callout
     variant: info
     title: Walkthrough
-    text: Keep testDir at ./tests. A testDir in the source folder makes the CI job slow and the start of UI mode slow.
+    text: Keep test code separated from source code.
 - id: codegen
   layout: content
   title: Codegen
@@ -182,8 +182,10 @@ slides:
     text: npx playwright show-trace test-results/.../trace.zip — go back in time and change to the ARIA tab.
 - id: ci-artifacts
   layout: content
-  title: Make the trace available in CI
   blocks:
+  - type: heading
+    label: From a real project
+    title: Make the trace available in CI
   - type: text
     text: A test can fail in CI and pass on your machine. Without the artifacts you can only guess. Thus the pipeline must keep them.
   - type: code
@@ -212,8 +214,10 @@ slides:
     text: Add the two steps to your workflow. The first one runs always. The second one runs only after a failure.
 - id: pyramid
   layout: content
-  title: Keep the test pyramid
   blocks:
+  - type: heading
+    label: From a real project
+    title: Keep the test pyramid
   - type: text
     text: Codegen, UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more time to write and to keep than a unit test.
   - type: callout
@@ -291,13 +295,16 @@ slides:
     text: pnpm run test:integration — the containers start, then 4 tests run against the real API.
 - id: compose-setup
   layout: content
-  title: Start the dependencies with Compose
   blocks:
+  - type: heading
+    label: From a real project
+    title: Start the dependencies with Compose
+  - type: text
+    text: First I started each container from the test code. It was flaky — on my machine and in CI.
   - type: list
-    title: What broke when I started each container in the test code
+    title: What broke
     items:
-    - The start order
-    - The readiness check before the next container starts
+    - The start order and the readiness check
     - The network between the containers and the port mapping
     - Containers that stayed after the run
   - type: code
@@ -308,7 +315,6 @@ slides:
       postgres:
         healthcheck:
           test: ["CMD-SHELL", "pg_isready -U postgres"]
-
       backend:
         depends_on:
           postgres:
@@ -390,8 +396,10 @@ slides:
     text: 'pnpm run test:retries — the red test retries. With isolated both retries run last, back to back. Comment the line out and run again: the first retry then runs in the middle of the suite.'
 - id: mock-or-real-choice
   layout: content
-  title: Mock or real — how I choose
   blocks:
+  - type: heading
+    label: From a real project
+    title: Mock or real — how I choose
   - type: text
     text: The two approaches are not in competition. Both are correct, and both add value. I choose with the complexity of the project.
   - type: box
@@ -410,8 +418,10 @@ slides:
     text: Answer the three questions for your own project. The demo app has one service and a small contract.
 - id: when-to-run
   layout: content
-  title: The E2E tests are not only a frontend job
   blocks:
+  - type: heading
+    label: From a real project
+    title: The E2E tests are not only a frontend job
   - type: text
     text: Playwright tests a user interface. Thus teams put the tests in the frontend pipeline only. But a test against a real backend image also tests the backend.
   - type: callout
@@ -729,12 +739,20 @@ slides:
     - Copy prompt in the report — give a failed test to an LLM with one click
 - id: questions
   layout: content
-  title: Questions
+  title: That's all folks!
   blocks:
-  - type: cta
-    label: Thank you
-    headline: Questions?
-    text: The demo project and these slides are in the repository. Write to me if you want the link.
-    email: kontakt@vensas.de
-    website: vensas.de
+  - type: columns
+    widths:
+    - 8
+    - 1.6
+    columns:
+    - - type: cta
+        label: Thank you
+        headline: Questions?
+        text: Demo project and slides available at https://github.com/vensas/playwright-2026-talk
+        email: kontakt@vensas.de
+        website: vensas.de
+    - - type: image
+        src: repo-qr.png
+        alt: QR code for the repository
 type: slides
