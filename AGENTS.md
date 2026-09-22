@@ -20,7 +20,7 @@ An update of the Webworker Meetup Saar 11/2025 talk (`../webworker-meetup-saar-1
 
 | Deck | File | Slides | Purpose |
 |---|---|---|---|
-| Talk deck | `playwright-beyond-the-happy-path` | 21 | The event on 2026-09-24. 48 minutes on stage, plus about 10 minutes for questions in the 60 minute slot. |
+| Talk deck | `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | 21 | The event on 2026-09-24. 48 minutes on stage, plus about 10 minutes for questions in the 60 minute slot. |
 | Content pool | `playwright-content-pool` | 30 | Every slide. Not tied to an event. A new talk deck takes the slides that it needs from here. |
 
 **Make a new slide in the pool first.** Then copy it into a talk deck. A talk deck holds no
@@ -72,15 +72,18 @@ All three documents use the **vensas-doc-generator** (`../vensas-doc-generator`)
 
 ```
 docs/
-  playwright-beyond-the-happy-path.yaml   the talk deck — type: slides, 21 slides, theme dark
-  playwright-beyond-the-happy-path.pdf    generated, do not edit
-  playwright-content-pool.yaml            the content pool — type: slides, 30 slides, theme dark
-  playwright-content-pool.pdf             generated, do not edit
-  playwright-demo-script.yaml             the stage script — type: report, 8 sections
-  playwright-demo-script.pdf              generated, do not edit
-  avatar.jpg                              the photo on the about-me slide
-  repo-qr.png                             the QR code on the last slide
+  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the talk deck — 21 slides, theme dark
+  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, do not edit
+  playwright-content-pool.yaml                               the content pool — 30 slides, theme dark
+  playwright-content-pool.pdf                                generated, do not edit
+  playwright-demo-script.yaml                                the stage script — type: report, 8 sections
+  playwright-demo-script.pdf                                 generated, do not edit
+  avatar.jpg                                                 the photo on the about-me slide
+  repo-qr.png                                                the QR code on the last slide
 ```
+
+A talk deck gets an event suffix: `<name>-<event>-<date>`. The content pool and the demo
+script have no suffix, because there is one of each.
 
 The three YAML files are the only source of truth. Use `generate-docs.sh` in the repository
 root after each change — it makes all PDFs with one command:
@@ -144,7 +147,7 @@ and `sections[].content` accepts HTML.
 
 ## Keep the talk deck and the demo script in sync
 
-`docs/playwright-beyond-the-happy-path.yaml` (the **talk deck**) and
+`docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml` (the **talk deck**) and
 `docs/playwright-demo-script.yaml` (the stage script) are **coupled**. The demo script
 refers to slides by number. If you change one file and not the other, the speaker reads a
 step for a slide that is no longer there.

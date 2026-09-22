@@ -10,14 +10,14 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 
 ```
 ├── docs/
-│   ├── playwright-beyond-the-happy-path.yaml   the talk deck, input for the vensas-doc-generator
-│   ├── playwright-beyond-the-happy-path.pdf    the talk deck, 21 slides
-│   ├── playwright-content-pool.yaml            the content pool, input
-│   ├── playwright-content-pool.pdf             the content pool, 30 slides
-│   ├── playwright-demo-script.yaml             the stage script, input
-│   ├── playwright-demo-script.pdf              the stage script, 4 pages
-│   ├── playwright-2026-talk.md                 research notes (stops at 1.61)
-│   └── playwright-talk-abstract-de.md          German abstract for the call for papers
+│   ├── playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the talk deck, input
+│   ├── playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    the talk deck, 21 slides
+│   ├── playwright-content-pool.yaml                               the content pool, input
+│   ├── playwright-content-pool.pdf                                the content pool, 30 slides
+│   ├── playwright-demo-script.yaml                                the stage script, input
+│   ├── playwright-demo-script.pdf                                 the stage script, 4 pages
+│   ├── playwright-2026-talk.md                                    research notes (stops at 1.61)
+│   └── playwright-talk-abstract-de.md                             German abstract for the CfP
 ├── src/
 │   ├── deploy-or-die-frontend/                 React app and the TypeScript tests
 │   ├── deploy-or-die-backend/                  ASP.NET Core API and PostgreSQL
@@ -32,7 +32,7 @@ Three documents, all made with the [vensas-doc-generator](../vensas-doc-generato
 
 | Document | Type | Content |
 |---|---|---|
-| `playwright-beyond-the-happy-path` | `slides` | **The talk deck** for 24 September 2026. 21 slides, about 48 minutes, plus about 10 minutes for questions. |
+| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | `slides` | **The talk deck** for 24 September 2026. 21 slides, about 48 minutes, plus about 10 minutes for questions. |
 | `playwright-content-pool` | `slides` | **The content pool.** All 30 slides, not tied to an event. A talk deck takes the slides that it needs from here. |
 | `playwright-demo-script` | `report` | The stage script for the **talk deck**. The demos as 6 sessions, with brief steps and a command reference. |
 

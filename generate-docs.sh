@@ -21,7 +21,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_DIR="$REPO_DIR/docs"
 GENERATOR_DIR="${DOC_GENERATOR_DIR:-$REPO_DIR/../vensas-doc-generator}"
 
-DECK="playwright-beyond-the-happy-path"
+DECK="playwright-beyond-the-happy-path-dnug-ka-2026-09-24"
 POOL="playwright-content-pool"
 SCRIPT_DOC="playwright-demo-script"
 

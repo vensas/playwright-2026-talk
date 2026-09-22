@@ -6,7 +6,7 @@ type_label: Demo Script
 title: Demo Script
 subject_name: Playwright Beyond the Happy Path
 intro: |
-  <p>The stage script for the talk deck <code>playwright-beyond-the-happy-path</code> —
+  <p>The stage script for the talk deck <code>playwright-beyond-the-happy-path-dnug-ka-2026-09-24</code> —
   21 slides. The demos run as <strong>6 continuous sessions</strong>. Each session keeps its
   terminal and its browser open, and each numbered step is one slide. The number in brackets
   is the slide number.</p>
