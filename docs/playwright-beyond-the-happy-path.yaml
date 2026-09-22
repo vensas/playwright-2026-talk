@@ -43,7 +43,7 @@ slides:
     - key: Playwright
       value: 1.63.0 for TypeScript, 1.62.0 for .NET — the bindings follow Node, one version behind
     type: table
-  - text: pnpm run dev — deploy once, then watch the cooldown block the next deployment.
+  - text: pnpm run dev — deploy twice in a row. The second deployment is blocked.
     title: Demo
     type: callout
     variant: info
@@ -100,7 +100,7 @@ slides:
       text: The window needed some minutes to start, but not each time.
     title: What it cost us
     type: box
-  - text: Keep test code separated from source code.
+  - text: Look at testDir in your config. If it points at the source folder, move the tests.
     title: Walkthrough
     type: callout
     variant: info
@@ -136,7 +136,7 @@ slides:
     filename: .github/workflows/e2e.yml
     language: yaml
     type: code
-  - text: Add the two steps to your workflow. The first one runs always. The second one runs only after a failure.
+  - text: Copy the two steps into your workflow. A red build then gives you the trace, and you do not repeat the run to find out what happened.
     title: Walkthrough
     type: callout
     variant: info
@@ -146,7 +146,7 @@ slides:
   - label: From a real project
     title: Keep the test pyramid
     type: heading
-  - text: Codegen, UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more time to write and to keep than a unit test.
+  - text: UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more time to write and to keep than a unit test.
     type: text
   - text: The team wrote mostly Playwright tests. React Testing Library was sufficient for 80% of these scenarios. The suite became very large, and then the CI runners became unreliable.
     title: From a team that I mentored
@@ -181,7 +181,7 @@ slides:
   layout: content
   title: Mock the API
 - blocks:
-  - caption: Docker Compose is more stable than a container that you build in the test code.
+  - caption: The global setup starts the whole environment one time, before the first test.
     code: "const composeEnvironment = await new DockerComposeEnvironment(\n  composeFilePath,\n  'docker-compose.integration.yml',\n).up();\n\nconst backend = composeEnvironment.getContainer('backend-1');\nprocess.env.API_URL = `http://localhost:${backend.getMappedPort(5000)}`;\n"
     filename: tests/testcontainers.ts
     language: typescript
@@ -219,7 +219,7 @@ slides:
     filename: tests/docker-compose.integration.yml
     language: yaml
     type: code
-  - text: Put the healthcheck and depends_on in the Compose file. Then the test code needs no wait code.
+  - text: Start the containers one time in a global setup, not for each test.
     title: Walkthrough
     type: callout
     variant: info
@@ -238,10 +238,10 @@ slides:
       text: How complex is the API contract?
     - label: Test
       text: How complex is the test itself?
-    note: I answer these questions again for each project. Your environment and your test plan give the answer, not a rule.
+    note: Your environment and your test plan give the answer, not a rule.
     title: Three questions before I decide
     type: box
-  - text: Answer the three questions for your own project. The demo app has one service and a small contract.
+  - text: The demo app has one service and a small contract. Thus it has 17 mocked tests and 4 integration tests.
     title: Walkthrough
     type: callout
     variant: info
@@ -287,7 +287,7 @@ slides:
   layout: content
   title: Accessibility as a gate
 - blocks:
-  - caption: The API is equal in all languages. Only the names use the .NET style. The package is Microsoft.Playwright.Xunit.v3 1.62.0 — the bindings follow Node, one version behind. NUnit and MSTest also exist.
+  - caption: The API is equal in all languages. Only the names use the .NET style. The package is Microsoft.Playwright.Xunit.v3 — NUnit and MSTest also exist.
     code: "public class DeployTests : PageTest\n{\n    [Fact]\n    public async Task Cooldown_BlocksTheSecondDeployment()\n    {\n        await Page.Clock.InstallAsync();\n        await Page.GotoAsync(\"http://localhost:3000\");\n\n        var deploy = Page.GetByRole(AriaRole.Button,\n            new() { NameRegex = new Regex(\"Deploy Now\") });\n        await deploy.ClickAsync();\n\n        // Move the time forward instead of a wait of 30 seconds.\n        await Page.Clock.FastForwardAsync(\"00:30\");\n        await Expect(deploy).ToBeEnabledAsync();\n    }\n}\n"
     filename: DeployTests.cs
     language: csharp
@@ -349,7 +349,7 @@ slides:
     title: Same engine, same result
     type: callout
     variant: trust
-  - text: dotnet test — 5 tests, 1 red. The C# result names the same three rules as the TypeScript result.
+  - text: dotnet test — 5 tests, 1 red. Compare the output with the TypeScript run.
     title: Demo
     type: callout
     variant: info
@@ -406,7 +406,7 @@ slides:
     style: connector
     title: The rule that works for us
     type: box
-  - text: Find the three defects in the listing above. Then compare them with tests/locators.spec.ts, the reviewed version of the same test.
+  - text: Compare the listing with tests/locators.spec.ts — the reviewed version of the same test.
     title: Demo
     type: callout
     variant: info
@@ -419,12 +419,6 @@ slides:
       tag_style: opt
       text: The mocked project needs no container. Thus a developer gets an answer in 10 seconds.
       title: Divide the tests into projects
-    - text: Each integration test costs minutes. Four of them are enough for us.
-      title: Use the real backend only for the important paths
-    - text: A global setup with Docker Compose is much more stable than a container per test.
-      title: Start the containers with Compose, not in the test code
-    - text: A trace answers the question 'why did it fail in CI' without a second run.
-      title: Switch on traces in the pipeline
     - text: Three defects in a small form. A large application has hundreds.
       title: Make accessibility a gate on day one
     type: steps

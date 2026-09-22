@@ -67,7 +67,7 @@ sections:
       <li><strong>[10]</strong> <code>pnpm run test:integration</code> — the containers are
           warm, then 4 tests run against the real ASP.NET Core API and PostgreSQL.</li>
       <li><strong>[11]</strong> Show the <code>healthcheck</code> and <code>depends_on</code>
-          in the Compose file. Name the five things that broke when you started each container
+          in the Compose file. Name the three things that broke when you started each container
           from the test code.</li>
       <li><strong>[12]</strong> Go through the three questions. Give the answers for the demo
           app: one service, a small contract.</li>
@@ -125,8 +125,8 @@ sections:
 - title: Close — Slides 20–21 · 2 min
   content: |
     <ol>
-      <li><strong>[20]</strong> Read the five lessons. They repeat what the six slides from
-          real projects showed.</li>
+      <li><strong>[20]</strong> Read the two lessons. They are the two that the six slides
+          from real projects did not already make.</li>
       <li><strong>[21]</strong> Leave the last slide up for the questions. The QR code goes to
           the repository with the demo project and these slides.</li>
     </ol>

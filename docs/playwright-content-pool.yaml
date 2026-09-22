@@ -49,7 +49,7 @@ slides:
   - type: callout
     variant: info
     title: Demo
-    text: pnpm run dev — deploy once, then watch the cooldown block the next deployment.
+    text: pnpm run dev — deploy twice in a row. The second deployment is blocked.
 - id: locators
   layout: content
   title: Locators and auto-wait
@@ -138,7 +138,7 @@ slides:
   - type: callout
     variant: info
     title: Walkthrough
-    text: Keep test code separated from source code.
+    text: Look at testDir in your config. If it points at the source folder, move the tests.
 - id: codegen
   layout: content
   title: Codegen
@@ -202,7 +202,7 @@ slides:
   - type: callout
     variant: info
     title: Walkthrough
-    text: Add the two steps to your workflow. The first one runs always. The second one runs only after a failure.
+    text: Copy the two steps into your workflow. A red build then gives you the trace, and you do not repeat the run to find out what happened.
 - id: pyramid
   layout: content
   blocks:
@@ -248,7 +248,7 @@ slides:
   - type: code
     language: typescript
     filename: tests/testcontainers.ts
-    caption: Docker Compose is more stable than a container that you build in the test code.
+    caption: The global setup starts the whole environment one time, before the first test.
     code: "const composeEnvironment = await new DockerComposeEnvironment(\n  composeFilePath,\n  'docker-compose.integration.yml',\n).up();\n\nconst backend = composeEnvironment.getContainer('backend-1');\nprocess.env.API_URL = `http://localhost:${backend.getMappedPort(5000)}`;\n"
   - type: box
     title: Mock or real
@@ -285,7 +285,7 @@ slides:
   - type: callout
     variant: info
     title: Walkthrough
-    text: Put the healthcheck and depends_on in the Compose file. Then the test code needs no wait code.
+    text: Start the containers one time in a global setup, not for each test.
 - id: test-locks
   layout: content
   title: Test locks — new in 1.63
@@ -358,11 +358,11 @@ slides:
       text: How complex is the API contract?
     - label: Test
       text: How complex is the test itself?
-    note: I answer these questions again for each project. Your environment and your test plan give the answer, not a rule.
+    note: Your environment and your test plan give the answer, not a rule.
   - type: callout
     variant: info
     title: Walkthrough
-    text: Answer the three questions for your own project. The demo app has one service and a small contract.
+    text: The demo app has one service and a small contract. Thus it has 17 mocked tests and 4 integration tests.
 - id: when-to-run
   layout: content
   blocks:
@@ -468,7 +468,7 @@ slides:
   - type: code
     language: csharp
     filename: DeployTests.cs
-    caption: The API is equal in all languages. Only the names use the .NET style. The package is Microsoft.Playwright.Xunit.v3 1.62.0 — the bindings follow Node, one version behind. NUnit and MSTest also exist.
+    caption: The API is equal in all languages. Only the names use the .NET style. The package is Microsoft.Playwright.Xunit.v3 — NUnit and MSTest also exist.
     code: "public class DeployTests : PageTest\n{\n    [Fact]\n    public async Task Cooldown_BlocksTheSecondDeployment()\n    {\n        await Page.Clock.InstallAsync();\n        await Page.GotoAsync(\"http://localhost:3000\");\n\n        var deploy = Page.GetByRole(AriaRole.Button,\n            new() { NameRegex = new Regex(\"Deploy Now\") });\n        await deploy.ClickAsync();\n\n        // Move the time forward instead of a wait of 30 seconds.\n        await Page.Clock.FastForwardAsync(\"00:30\");\n        await Expect(deploy).ToBeEnabledAsync();\n    }\n}\n"
   - type: callout
     variant: info
@@ -530,7 +530,7 @@ slides:
   - type: callout
     variant: info
     title: Demo
-    text: dotnet test — 5 tests, 1 red. The C# result names the same three rules as the TypeScript result.
+    text: dotnet test — 5 tests, 1 red. Compare the output with the TypeScript run.
 - id: mcp
   layout: content
   title: The Playwright MCP server
@@ -611,7 +611,7 @@ slides:
   - type: callout
     variant: info
     title: Demo
-    text: Find the three defects in the listing above. Then compare them with tests/locators.spec.ts, the reviewed version of the same test.
+    text: Compare the listing with tests/locators.spec.ts — the reviewed version of the same test.
 - id: lessons
   layout: content
   title: Lessons learned
