@@ -6,25 +6,17 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 
 **E2E tests, accessibility and MCP in practice.** Sven Hennessen · vensas GmbH
 
-## Repository structure
+## The deck for the session
 
-```
-├── docs/
-│   ├── playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the talk deck, input
-│   ├── playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    the talk deck, 21 slides
-│   ├── playwright-content-pool.yaml                               the content pool, input
-│   ├── playwright-content-pool.pdf                                the content pool, 30 slides
-│   ├── playwright-demo-script.yaml                                the stage script, input
-│   ├── playwright-demo-script.pdf                                 the stage script, 4 pages
-│   ├── playwright-2026-talk.md                                    research notes (stops at 1.61)
-│   └── playwright-talk-abstract-de.md                             German abstract for the CfP
-├── src/
-│   ├── deploy-or-die-frontend/                 React app and the TypeScript tests
-│   ├── deploy-or-die-backend/                  ASP.NET Core API and PostgreSQL
-│   ├── deploy-or-die-dotnet-tests/             the same tests in C# with xUnit
-│   └── deploy-or-die-apphost/                  Aspire AppHost, starts all three at once
-└── generate-docs.sh                            makes all three PDFs
-```
+> ### `docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf`
+>
+> **This is the deck for the .NET User Group Karlsruhe on 24 September 2026.**
+
+The stage script that belongs to it is
+`docs/playwright-demo-script.pdf`, which also holds the time box for each session.
+
+**Note `docs/playwright-content-pool.pdf`.** That file holds every slide. It is
+the pool that a talk deck takes its slides from, and it is not tied to an event.
 
 ## Slides and demo script
 
@@ -32,8 +24,8 @@ Three documents, all made with the [vensas-doc-generator](../vensas-doc-generato
 
 | Document | Type | Content |
 |---|---|---|
-| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | `slides` | **The talk deck** for 24 September 2026. 21 slides, about 48 minutes, plus about 10 minutes for questions. |
-| `playwright-content-pool` | `slides` | **The content pool.** All 30 slides, not tied to an event. A talk deck takes the slides that it needs from here. |
+| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | `slides` | **The talk deck** for 24 September 2026. |
+| `playwright-content-pool` | `slides` | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
 | `playwright-demo-script` | `report` | The stage script for the **talk deck**. The demos as 6 sessions, with brief steps and a command reference. |
 
 Make a new slide in the pool first, then copy it into a talk deck.
