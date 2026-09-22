@@ -10,8 +10,10 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 
 ```
 ├── docs/
-│   ├── playwright-beyond-the-happy-path.yaml   the deck, input for the vensas-doc-generator
-│   ├── playwright-beyond-the-happy-path.pdf    the deck, 24 slides
+│   ├── playwright-beyond-the-happy-path.yaml   the talk deck, input for the vensas-doc-generator
+│   ├── playwright-beyond-the-happy-path.pdf    the talk deck, 21 slides
+│   ├── playwright-content-pool.yaml            the content pool, input
+│   ├── playwright-content-pool.pdf             the content pool, 30 slides
 │   ├── playwright-demo-script.yaml             the stage script, input
 │   ├── playwright-demo-script.pdf              the stage script, 4 pages
 │   ├── playwright-2026-talk.md                 research notes (stops at 1.61)
@@ -21,31 +23,36 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 │   ├── deploy-or-die-backend/                  ASP.NET Core API and PostgreSQL
 │   ├── deploy-or-die-dotnet-tests/             the same tests in C# with xUnit
 │   └── deploy-or-die-apphost/                  Aspire AppHost, starts all three at once
-└── generate-docs.sh                            makes both PDFs
+└── generate-docs.sh                            makes all three PDFs
 ```
 
 ## Slides and demo script
 
-Two documents, both made with the [vensas-doc-generator](../vensas-doc-generator):
+Three documents, all made with the [vensas-doc-generator](../vensas-doc-generator):
 
 | Document | Type | Content |
 |---|---|---|
-| `playwright-beyond-the-happy-path` | `slides` | The deck. 24 slides, dark theme. One slide for each talking point. |
-| `playwright-demo-script` | `report` | The stage script. The demos as 6 sessions, with brief steps and a command reference. |
+| `playwright-beyond-the-happy-path` | `slides` | **The talk deck** for 24 September 2026. 21 slides, about 48 minutes, plus about 10 minutes for questions. |
+| `playwright-content-pool` | `slides` | **The content pool.** All 30 slides, not tied to an event. A talk deck takes the slides that it needs from here. |
+| `playwright-demo-script` | `report` | The stage script for the **talk deck**. The demos as 6 sessions, with brief steps and a command reference. |
 
-The YAML files are the single source of truth. One command generates both PDFs:
+Make a new slide in the pool first, then copy it into a talk deck.
+
+The YAML files are the single source of truth. One command generates all PDFs:
 
 ```sh
-./generate-docs.sh              # both documents
-./generate-docs.sh slides       # only the deck
+./generate-docs.sh              # all three documents
+./generate-docs.sh slides       # only the talk deck
+./generate-docs.sh pool         # only the content pool
 ./generate-docs.sh script       # only the demo script
 ```
 
 The script expects the [vensas-doc-generator](../vensas-doc-generator) beside this
 repository. Set `DOC_GENERATOR_DIR` to give a different path.
 
-The demo script refers to slides by number. **If you change the deck, correct the demo script
-too** — see the checklist in `AGENTS.md`.
+The demo script refers to slides of the talk deck by number. **If you change the talk deck,
+correct the demo script too** — see the checklist in `AGENTS.md`. The content pool has no
+demo script.
 
 ## Demo project: "Deploy or Die"
 

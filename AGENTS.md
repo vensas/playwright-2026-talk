@@ -1,7 +1,7 @@
 DO write all slides, code and comments in ASD-STE100 (Simplified Technical English).
 DO keep `AGENTS.md` and `README.md` up to date with the latest implementations.
 DO regenerate the PDF with `./generate-docs.sh` after each change to a document YAML.
-DO keep the deck and the demo script in sync — see "Keep the deck and the demo script in sync".
+DO keep the talk deck and the demo script in sync — see "Keep the talk deck and the demo script in sync".
 DO ask before you change the talk content — the speaker decides what goes on a slide.
 DO NOT put the content of `AGENTS.md` in the presentation.
 DO NOT commit, push or open a pull request without a request from the user.
@@ -12,58 +12,83 @@ DO NOT commit, push or open a pull request without a request from the user.
 An update of the Webworker Meetup Saar 11/2025 talk (`../webworker-meetup-saar-11-2025-playwright`).
 
 - Audience: developers. The talk is code first.
-- Length: 45 to 60 minutes. The current deck plans for about 53 minutes.
-- Structure: 24 slides. One slide for each talking point, and a demo for each slide.
-- The demos run as 6 continuous sessions, one for each block. Each slide is a beat in its session.
 - Event: **.NET User Group Karlsruhe, 24 September 2026**, DJK Ost, Karlsruhe.
   The Meetup listing uses the German title, but the deck stays English — the speaker decided this.
   The audience is .NET developers. This is why the .NET block is three slides, not one.
 
-### The 6 blocks
+### Two decks
+
+| Deck | File | Slides | Purpose |
+|---|---|---|---|
+| Talk deck | `playwright-beyond-the-happy-path` | 21 | The event on 2026-09-24. 48 minutes on stage, plus about 10 minutes for questions in the 60 minute slot. |
+| Content pool | `playwright-content-pool` | 30 | Every slide. Not tied to an event. A new talk deck takes the slides that it needs from here. |
+
+**Make a new slide in the pool first.** Then copy it into a talk deck. A talk deck holds no
+slide that the pool does not have.
+
+### The blocks of the talk deck
 
 | Block | Slides | Subject |
 |---|---|---|
 | Frame | 1–3 | Cover, about me, the demo app |
-| A · Fundamentals | 4–7 | Locators and auto-wait, UI mode, codegen, traces |
-| B · Mock or real | 8–12 | `page.route`, Testcontainers, test locks, Speedboard, isolated retries |
-| C · Time control | 13 | Clock API |
-| D · Accessibility | 14–15 | axe-core, ARIA snapshots |
-| E · .NET | 16–18 | The same test in C# with xUnit, what the bindings can and cannot do, axe in C# |
-| F · AI and agents | 19–21 | MCP server, Test Agents, the caveat |
-| Close | 22–24 | Lessons learned, outlook, questions |
+| A · Tools and traces | 4–8 | UI mode, test folder ★, traces, artifacts in CI ★, test pyramid ★ |
+| B · Mock or real | 9–13 | `page.route`, Testcontainers, Compose ★, how to choose ★, when to run ★ |
+| C · Accessibility | 14 | axe-core as a gate, red to green |
+| D · .NET | 15–17 | The same test in C# with xUnit, what the bindings can and cannot do, axe in C# |
+| E · AI and agents | 18–19 | MCP server, the caveat |
+| Close | 20–21 | Lessons learned, questions |
+
+★ = a slide from a real project. **Personal experience is the reason for this talk.** All six
+of these slides are in the talk deck. If the talk must become shorter, cut a feature slide,
+not one of these.
+
+### The 9 slides that the talk deck does not have
+
+They stay in the pool: locators, codegen, test locks, Speedboard, isolated retries, Clock API,
+ARIA snapshots, Test Agents, and the outlook. Reasons: UI mode, test locks and isolated retries
+have no equivalent in .NET (the audience uses xUnit); codegen and the Clock API appear in the
+C# slides; the others are a feature tour, and experience beats features here.
 
 ### Playwright Test features that .NET does not have
 
-Slides 10 (test locks) and 12 (isolated retries) carry a caveat line, because both are
-**Playwright Test** features. The .NET bindings have no equivalent — there the runner is
-xUnit. Slide 17 lists the full split. Do not remove these lines: the audience is a .NET
-user group, and the claim would otherwise be wrong for them.
+Slide 16 of the talk deck (`dotnet-parity`) lists the full split. The pool also has slides for
+test locks and isolated retries, and both carry a caveat line. Do not remove these lines: the
+audience is a .NET user group, and the claim would otherwise be wrong for them. The talk deck
+does not show these two features, thus the speaker says in one sentence what they are — the
+demo script has this step.
 
 ### Out of scope (the speaker decided this)
 
-- **WebSocket mocking** — the demo app has no WebSocket feature. One line on slide 21 only.
-- **Component testing** (1.62) — one line on slide 21 only.
-- **WebAuthn passkeys** (1.61) — parking lot. One line on slide 21 only.
+- **WebSocket mocking** — the demo app has no WebSocket feature. One line in the pool only.
+- **Component testing** (1.62) — one line in the pool only.
+- **WebAuthn passkeys** (1.61) — parking lot. One line in the pool only.
+
+These three lines are on the `outlook` slide, which is in the pool and not in the talk deck.
 
 ## Documents
 
-Both documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do **not**
-use Marp any more. The old Marp deck was deleted.
+All three documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do
+**not** use Marp any more. The old Marp deck was deleted.
 
 ```
 docs/
-  playwright-beyond-the-happy-path.yaml   the deck — type: slides, 24 slides, theme dark
+  playwright-beyond-the-happy-path.yaml   the talk deck — type: slides, 21 slides, theme dark
   playwright-beyond-the-happy-path.pdf    generated, do not edit
+  playwright-content-pool.yaml            the content pool — type: slides, 30 slides, theme dark
+  playwright-content-pool.pdf             generated, do not edit
   playwright-demo-script.yaml             the stage script — type: report, 8 sections
   playwright-demo-script.pdf              generated, do not edit
+  avatar.jpg                              the photo on the about-me slide
+  repo-qr.png                             the QR code on the last slide
 ```
 
-The two YAML files are the only source of truth. Use `generate-docs.sh` in the repository
-root after each change — it makes both PDFs with one command:
+The three YAML files are the only source of truth. Use `generate-docs.sh` in the repository
+root after each change — it makes all PDFs with one command:
 
 ```sh
-./generate-docs.sh              # both documents
-./generate-docs.sh slides       # only the deck
+./generate-docs.sh              # all three documents
+./generate-docs.sh slides       # only the talk deck
+./generate-docs.sh pool         # only the content pool
 ./generate-docs.sh script       # only the demo script
 ./generate-docs.sh -v           # show the full generator output
 ```
@@ -117,27 +142,31 @@ and `sections[].content` accepts HTML.
 - The generator rewrites the YAML file when it runs. It removes comments and quotation
   marks. Edit the file with a YAML parser, not with a text search for a quoted string.
 
-## Keep the deck and the demo script in sync
+## Keep the talk deck and the demo script in sync
 
-`docs/playwright-beyond-the-happy-path.yaml` (the deck) and
+`docs/playwright-beyond-the-happy-path.yaml` (the **talk deck**) and
 `docs/playwright-demo-script.yaml` (the stage script) are **coupled**. The demo script
 refers to slides by number. If you change one file and not the other, the speaker reads a
 step for a slide that is no longer there.
 
-**After each change to either file, check all five points below and correct both files.**
+**The content pool has no demo script.** A change in the pool alone breaks nothing. It
+becomes relevant when a slide moves from the pool into the talk deck.
+
+**After each change to the talk deck or to the script, check all five points below and
+correct both files.**
 
 | # | Coupling | What breaks if you forget |
 |---|---|---|
-| 1 | **Slide numbers** — the demo script writes them as `[4]`, and in each heading as "Slides 4–7" | A step points to the wrong slide |
+| 1 | **Slide numbers** — the demo script writes them as `[4]`, and in each heading as "Slides 4–8" | A step points to the wrong slide |
 | 2 | **The `Demo` / `Walkthrough` callout** on a slide and the step for that slide in the script | The slide promises one thing, the speaker does another |
-| 3 | **Time boxes** — the minutes in each script heading, and the sum in the script intro | The talk does not fit in 45 to 60 minutes |
+| 3 | **Time boxes** — the minutes in each script heading, and the sum in the script intro | The talk does not fit in the 60 minute slot with questions |
 | 4 | **Commands** — the `scripts` in `src/deploy-or-die-frontend/package.json` | A command on stage does not exist |
 | 5 | **The command reference table** at the end of the script | The quick reference is wrong |
 
-If you **add, remove or move a slide**, every later slide number changes. Renumber the whole
-demo script, not only the slide that you touched.
+If you **add, remove or move a slide in the talk deck**, every later slide number changes.
+Renumber the whole demo script, not only the slide that you touched.
 
-Then generate **both** PDFs with one command, and look at both:
+Then generate the PDFs with one command, and look at them:
 
 ```sh
 ./generate-docs.sh

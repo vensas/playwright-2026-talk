@@ -1,0 +1,679 @@
+number: SL-20260915-01
+date: '2026-09-22'
+output_file: playwright-content-pool
+lang: en
+title: Playwright Beyond the Happy Path — Content Pool
+theme: dark
+slides:
+- id: cover
+  layout: cover
+  hero:
+    label: Content pool · all slides
+    headline: 'Playwright '
+    headline_highlight: Beyond the Happy Path
+    subtext: Every slide for the talk. A talk deck takes the slides that it needs. Sven Hennessen · vensas GmbH
+- id: about-me
+  layout: content
+  title: About me
+  blocks:
+  - type: columns
+    widths:
+    - 2
+    - 8.8
+    columns:
+    - - type: image
+        src: avatar.jpg
+        alt: Sven Hennessen
+      - type: text
+        text: <strong style="color:var(--text-primary);font-size:19px;">Sven Hennessen</strong><br><span style="color:var(--text-accent);">vensas GmbH</span>
+    - - type: text
+        text: <div style="flex:1;height:100%;box-sizing:border-box;margin:0;padding:20px 24px;background:rgba(106,190,167,0.10);border:1px solid rgba(106,190,167,0.35);border-radius:10px;display:flex;flex-direction:column;justify-content:center;gap:16px;"> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;"><strong style="color:var(--text-accent);">Almost 20 years</strong> of software development and architecture</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;"><strong style="color:var(--text-accent);">Co-founder and co-managing director</strong> of vensas GmbH, founded in 2023</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Consulting and development of <strong style="color:var(--text-accent);">business software</strong> for medium-sized companies</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Away from the computer — <strong style="color:var(--text-accent);">hiking</strong>, <strong style="color:var(--text-accent);">cycling</strong> or the <strong style="color:var(--text-accent);">racing simulator</strong></span></div> </div>
+- id: demo-app
+  layout: content
+  title: 'The demo app: Deploy or Die'
+  blocks:
+  - type: text
+    text: A deployment game. Each deployment has a 50% success rate. After a deployment you must wait 30 seconds.
+  - type: table
+    rows:
+    - key: Frontend
+      value: React 19, PrimeReact, Rspack — port 3000
+    - key: Backend
+      value: ASP.NET Core minimal API, .NET 10 — POST /api/deploy
+    - key: Database
+      value: PostgreSQL 16, started by Docker Compose
+    - key: Tests
+      value: TypeScript with Playwright Test, C# with xUnit
+    - key: Playwright
+      value: 1.63.0 for TypeScript, 1.62.0 for .NET — the bindings follow Node, one version behind
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run dev — deploy once, then watch the cooldown block the next deployment.
+- id: locators
+  layout: content
+  title: Locators and auto-wait
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/locators.spec.ts
+    caption: A locator says WHAT you want. Playwright finds the element again for each action.
+    code: '// Use this order: role, label, text. These stay correct when the
+
+      // CSS classes or the DOM structure change.
+
+      await expect(page.getByRole(''heading'', { name: /Deploy or Die/i })).toBeVisible();
+
+      await expect(page.getByLabel(/Who dares to deploy/i)).toBeEditable();
+
+
+      // The API answer comes late, but the test does not wait manually.
+
+      await page.getByRole(''button'', { name: /Deploy Now/i }).click();
+
+      await expect(page.getByText(/Deployment successful/i)).toBeVisible();
+
+
+      // New in 1.63: keep only the elements that the user sees.
+
+      const visibleButtons = page.getByRole(''button'').visible();
+
+      '
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:mocked locators — delete an await to see the failure message.
+- id: ui-mode
+  layout: content
+  title: UI mode
+  blocks:
+  - type: columns
+    widths:
+    - 5
+    - 4
+    columns:
+    - - type: code
+        language: bash
+        code: 'pnpm run test:ui
+
+          '
+    - - type: list
+        title: What you get
+        items:
+        - Watch mode — the test runs again after each file change
+        - Time travel — go back to each step and see the DOM
+        - Pick locator — click an element to get the locator
+        - Network, console and source in one window
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:ui — pick a locator with the mouse, then change the test and let it run again.
+- id: test-folder
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: Keep the tests in their own folder
+  - type: code
+    language: typescript
+    filename: playwright.config.ts
+    caption: We made this change in one project. Then we made it again in the other direction.
+    code: '// We did this. Playwright then read all of src/ at each start.
+
+      testDir: ''./src'',
+
+
+      // Keep the default. The tests have their own folder.
+
+      testDir: ''./tests'',
+
+      '
+  - type: box
+    title: What it cost us
+    items:
+    - label: CI
+      text: The test job became slow. Then it stopped with a timeout.
+    - label: UI mode
+      text: The window needed some minutes to start, but not each time.
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Keep test code separated from source code.
+- id: codegen
+  layout: content
+  title: Codegen
+  blocks:
+  - type: code
+    language: bash
+    caption: Codegen records your clicks and writes the test. Since 1.55 it also writes assertions.
+    code: 'npx playwright codegen http://localhost:3000
+
+      '
+  - type: code
+    language: typescript
+    filename: generated
+    code: '// Codegen gives you a start, not a finished test.
+
+      await page.getByRole(''textbox'', { name: ''Who dares to deploy?'' }).click();
+
+      await page.getByRole(''textbox'', { name: ''Who dares to deploy?'' }).fill(''Sven'');
+
+      await page.getByRole(''button'', { name: ''Deploy Now 🚀'' }).click();
+
+      await expect(page.getByText(''Deployment successful'')).toBeVisible();
+
+      '
+  - type: callout
+    variant: warning
+    title: Demo and warning
+    text: npx playwright codegen http://localhost:3000 — record one deployment. Then correct the hard coded name and add the negative case.
+- id: traces
+  layout: content
+  title: Traces
+  blocks:
+  - type: code
+    language: typescript
+    filename: playwright.config.ts
+    caption: 'New in 1.63: the trace records the accessibility tree and the screen, not only the DOM.'
+    code: "use: {\n  trace: {\n    mode: 'on',\n    snapshots: { dom: true, aria: true, screen: true },\n  },\n  screenshot: 'only-on-failure',\n  video: 'retain-on-failure',\n}\n"
+  - type: list
+    title: A trace contains
+    items:
+    - A DOM snapshot for each step, plus the ARIA tree and the screen
+    - All network requests and answers
+    - The console output and the source code
+  - type: callout
+    variant: info
+    title: Demo
+    text: npx playwright show-trace test-results/.../trace.zip — go back in time and change to the ARIA tab.
+- id: ci-artifacts
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: Make the trace available in CI
+  - type: text
+    text: A test can fail in CI and pass on your machine. Without the artifacts you can only guess. Thus the pipeline must keep them.
+  - type: code
+    language: yaml
+    filename: .github/workflows/e2e.yml
+    caption: The report goes up after each run. The trace and the video go up only after a failure.
+    code: "- name: Upload the report\n  uses: actions/upload-artifact@v7\n  if: always()\n  with:\n    name: playwright-report\n    path: playwright-report/\n    retention-days: 7\n\n- name: Upload traces and videos\n  uses: actions/upload-artifact@v7\n  if: failure()\n  with:\n    name: playwright-traces\n    path: test-results/\n    retention-days: 7\n"
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Add the two steps to your workflow. The first one runs always. The second one runs only after a failure.
+- id: pyramid
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: Keep the test pyramid
+  - type: text
+    text: Codegen, UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more time to write and to keep than a unit test.
+  - type: callout
+    variant: warning
+    title: From a team that I mentored
+    text: The team wrote mostly Playwright tests. React Testing Library was sufficient for 80% of these scenarios. The suite became very large, and then the CI runners became unreliable.
+  - type: box
+    title: What I take from this
+    style: connector
+    items:
+    - label: Many
+      text: Unit and component tests. They are fast and cheap.
+    - label: Few
+      text: E2E tests. Use them for the important paths.
+    note: An unreliable E2E test is worse than no E2E test.
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Count the E2E tests in your project. Then ask which of them a unit test or a component test can do.
+- id: mock
+  layout: content
+  title: Mock the API
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/deploy-failure.spec.ts
+    caption: You control the answer. Thus you can test the error path, which occurs only 50% of the time.
+    code: "// Set the route before you go to the page.\nawait page.route('**/api/deploy', async (route) => {\n  await route.fulfill({\n    status: 200,\n    contentType: 'application/json',\n    body: JSON.stringify({\n      success: false,\n      message: '\U0001F4A5 BOOM! The database just went on vacation.',\n      deployedBy: 'Unlucky Developer',\n    }),\n  });\n});\n\nawait page.goto('/');\n"
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:mocked — 17 tests in about 10 seconds, with no backend and no database.
+- id: real-backend
+  layout: content
+  title: The real backend
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/testcontainers.ts
+    caption: Docker Compose is more stable than a container that you build in the test code.
+    code: "const composeEnvironment = await new DockerComposeEnvironment(\n  composeFilePath,\n  'docker-compose.integration.yml',\n).up();\n\nconst backend = composeEnvironment.getContainer('backend-1');\nprocess.env.API_URL = `http://localhost:${backend.getMappedPort(5000)}`;\n"
+  - type: box
+    title: Mock or real
+    style: connector
+    items:
+    - label: Mock
+      text: Fast and stable. Blind to the backend.
+    - label: Real
+      text: Finds integration faults. Slow.
+    note: Use mocks for the many tests. Use the real backend for the few important paths.
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:integration — the containers start, then 4 tests run against the real API.
+- id: compose-setup
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: Start the dependencies with Compose
+  - type: text
+    text: First I started each container from the test code. It was flaky — on my machine and in CI.
+  - type: list
+    title: What broke
+    items:
+    - The start order and the readiness check
+    - The network between the containers and the port mapping
+    - Containers that stayed after the run
+  - type: code
+    language: yaml
+    filename: tests/docker-compose.integration.yml
+    caption: depends_on with a healthcheck replaces the wait code in the test.
+    code: "postgres:\n  healthcheck:\n    test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\nbackend:\n  depends_on:\n    postgres:\n      condition: service_healthy\n"
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Put the healthcheck and depends_on in the Compose file. Then the test code needs no wait code.
+- id: test-locks
+  layout: content
+  title: Test locks — new in 1.63
+  blocks:
+  - type: text
+    text: All integration tests write to the same database. Before 1.63 you made the whole file serial, or you accepted the flakiness.
+  - type: code
+    language: typescript
+    filename: tests/deploy-integration.spec.ts
+    caption: Two tests with the same lock name never run at the same time — across files and across workers. Playwright Test only — the .NET bindings have no lock, because xUnit is the runner there.
+    code: "test.describe('Integration Tests', { lock: 'deploy-db' }, () => {\n  test('should deploy against the real backend', async ({ page }) => {\n    // ...\n  });\n\n  test('the API rejects a request without a name', async ({ request }) => {\n    // ...\n  });\n});\n\n// The other tests keep their parallel speed.\n"
+  - type: callout
+    variant: info
+    title: Demo
+    text: Run the integration project with --workers=4. The Timeline in the report shows that the four locked tests do not overlap.
+- id: speedboard
+  layout: content
+  title: Speedboard and Timeline
+  blocks:
+  - type: text
+    text: The mocked tests need 10 seconds. The integration tests need more than 4 minutes. The report shows you where the time goes.
+  - type: code
+    language: bash
+    code: 'pnpm run test:report
+
+      '
+  - type: box
+    title: Two tabs in the HTML report
+    items:
+    - label: Speedboard
+      text: A list of all tests, sorted by duration. The slowest test is at the top.
+    - label: Timeline
+      text: The wall clock time of the run. It shows where a worker waits.
+    note: Most of our 4 minutes is the container build, not the tests.
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:report after the integration run — look at Speedboard, then at Timeline.
+- id: isolated-retries
+  layout: content
+  title: Isolated retries — new in 1.62
+  blocks:
+  - type: code
+    language: typescript
+    filename: playwright.config.ts
+    caption: The retries run one after the other at the end of the run, not immediately under full load. Playwright Test only — not available in the .NET bindings.
+    code: "export default defineConfig({\n  retries: process.env.CI ? 2 : 0,\n\n  // New in 1.62.\n  retryStrategy: 'isolated',\n});\n"
+  - type: callout
+    variant: warning
+    title: Why this helps
+    text: 'A test that fails only because of parallel load now passes on the isolated retry. This tells you the cause: it is the load, not the code.'
+  - type: callout
+    variant: info
+    title: Demo
+    text: 'pnpm run test:retries — the red test retries. With isolated both retries run last, back to back. Comment the line out and run again: the first retry then runs in the middle of the suite.'
+- id: mock-or-real-choice
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: Mock or real — how I choose
+  - type: text
+    text: The two approaches are not in competition. Both are correct, and both add value. I choose with the complexity of the project.
+  - type: box
+    title: Three questions before I decide
+    items:
+    - label: Services
+      text: How many services does the scenario touch?
+    - label: Contract
+      text: How complex is the API contract?
+    - label: Test
+      text: How complex is the test itself?
+    note: I answer these questions again for each project. Your environment and your test plan give the answer, not a rule.
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Answer the three questions for your own project. The demo app has one service and a small contract.
+- id: when-to-run
+  layout: content
+  blocks:
+  - type: heading
+    label: From a real project
+    title: The E2E tests are not only a frontend job
+  - type: text
+    text: Playwright tests a user interface. Thus teams put the tests in the frontend pipeline only. But a test against a real backend image also tests the backend.
+  - type: callout
+    variant: warning
+    title: What happened to a team that I mentored
+    text: The team released an API that was not compatible. Nobody ran the E2E tests before the release.
+  - type: list
+    title: What I recommend
+    items:
+    - Run the tests after each frontend build
+    - Run them after each backend build too
+    - Or run them nightly — your test plan decides
+  - type: callout
+    variant: info
+    title: Walkthrough
+    text: Find out where your E2E tests run today. Then add the backend build as a trigger, or run them nightly.
+- id: clock
+  layout: content
+  title: The Clock API
+  blocks:
+  - type: text
+    text: The app blocks a second deployment for 30 seconds. A test must not wait 30 seconds.
+  - type: code
+    language: typescript
+    filename: tests/cooldown.spec.ts
+    caption: install() must come before every other clock call.
+    code: 'await page.clock.install();
+
+      await page.goto(''/'');
+
+
+      await page.getByRole(''button'', { name: /Deploy Now/i }).click();
+
+      await expect(page.getByRole(''button'', { name: /Next deploy in 30s/i })).toBeVisible();
+
+
+      // Move the time forward by 5 seconds and let the timers run.
+
+      await page.clock.runFor(5_000);
+
+      await expect(page.getByRole(''button'', { name: /Next deploy in 25s/i })).toBeVisible();
+
+
+      // Skip the full cooldown. The test needs milliseconds, not 30 seconds.
+
+      await page.clock.fastForward(''00:30'');
+
+      await expect(page.getByRole(''button'', { name: /Deploy Now/i })).toBeEnabled();
+
+      '
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:clock — 3 tests in about 2 seconds, for a cooldown of 30 seconds.
+- id: axe
+  layout: content
+  title: Accessibility as a gate
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/accessibility.spec.ts
+    caption: The European Accessibility Act applies since June 2025. Thus this check belongs in the pipeline.
+    code: "const results = await new AxeBuilder({ page })\n  .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])\n  .analyze();\n\nawait testInfo.attach('axe-results.json', {\n  body: JSON.stringify(results.violations, null, 2),\n  contentType: 'application/json',\n});\n\nexpect(results.violations.map((v) => ({ rule: v.id, impact: v.impact }))).toEqual([]);\n"
+  - type: callout
+    variant: warning
+    title: Be honest about the limit
+    text: An automatic scan finds about 30% to 50% of the WCAG problems. It does not replace a test with a screen reader.
+  - type: callout
+    variant: info
+    title: Demo
+    text: pnpm run test:a11y fails with button-name, color-contrast and label. Set ACCESSIBLE_MODE = true in src/a11yMode.ts and it passes.
+- id: aria-snapshots
+  layout: content
+  title: ARIA snapshots
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/accessibility.spec.ts
+    caption: The snapshot asserts the accessibility tree, not the DOM. It shows roles and names, not CSS.
+    code: "await expect(page.locator('.card-header')).toMatchAriaSnapshot(`\n  - heading /Deploy or Die/ [level=1]\n  - paragraph: /Every deployment is a gamble/\n`);\n"
+  - type: box
+    title: Why this is different from axe-core
+    items:
+    - label: axe-core
+      text: Finds known WCAG defects, for example too little contrast
+    - label: ARIA snapshot
+      text: Finds a change of the structure, for example a lost role or a wrong heading level
+    note: The two checks find different faults. Use both.
+  - type: callout
+    variant: info
+    title: Demo
+    text: Change the h1 to an h2. The axe test still passes, but the ARIA snapshot fails.
+- id: dotnet
+  layout: content
+  title: The same test in C#
+  blocks:
+  - type: code
+    language: csharp
+    filename: DeployTests.cs
+    caption: The API is equal in all languages. Only the names use the .NET style. The package is Microsoft.Playwright.Xunit.v3 1.62.0 — the bindings follow Node, one version behind. NUnit and MSTest also exist.
+    code: "public class DeployTests : PageTest\n{\n    [Fact]\n    public async Task Cooldown_BlocksTheSecondDeployment()\n    {\n        await Page.Clock.InstallAsync();\n        await Page.GotoAsync(\"http://localhost:3000\");\n\n        var deploy = Page.GetByRole(AriaRole.Button,\n            new() { NameRegex = new Regex(\"Deploy Now\") });\n        await deploy.ClickAsync();\n\n        // Move the time forward instead of a wait of 30 seconds.\n        await Page.Clock.FastForwardAsync(\"00:30\");\n        await Expect(deploy).ToBeEnabledAsync();\n    }\n}\n"
+  - type: callout
+    variant: info
+    title: Demo
+    text: dotnet test — 4 tests pass. Compare the C# file with the TypeScript file.
+- id: dotnet-parity
+  layout: content
+  title: What the .NET bindings give you
+  blocks:
+  - type: text
+    text: The browser API is the same. The test runner is not — in .NET your runner is xUnit, NUnit or MSTest, not Playwright Test.
+  - type: columns
+    columns:
+    - - type: box
+        title: Works in C#
+        items:
+        - label: Locators
+          text: GetByRole, GetByLabel, auto-wait
+        - label: Clock API
+          text: InstallAsync, FastForwardAsync
+        - label: ARIA snapshots
+          text: ToMatchAriaSnapshotAsync
+        - label: Mocking
+          text: RouteAsync and the API request context
+        - label: Traces
+          text: Recorded, then read with show-trace
+        - label: Codegen
+          text: playwright codegen --target csharp
+    - - type: box
+        title: Playwright Test only
+        items:
+        - label: Test locks
+          text: Use an xUnit collection instead
+        - label: Isolated retries
+          text: The runner controls the retries
+        - label: UI mode
+          text: No equivalent
+        - label: Speedboard
+          text: Use your own test report
+        - label: Test Agents
+          text: They write TypeScript
+  - type: callout
+    variant: info
+    title: Demo
+    text: npx playwright codegen --target csharp-xunit http://localhost:3000 — the recorder writes C#, not TypeScript.
+- id: dotnet-a11y
+  layout: content
+  title: Accessibility in C#
+  blocks:
+  - type: code
+    language: csharp
+    filename: AccessibilityTests.cs
+    caption: Deque.AxeCore.Playwright 4.13.0 adds RunAxe() to Page and Locator. It uses the same axe-core engine as the TypeScript package.
+    code: "var results = await Page.RunAxe(new AxeRunOptions\n{\n    RunOnly = new RunOnlyOptions\n    {\n        Type = \"tag\",\n        Values = [\"wcag2a\", \"wcag2aa\", \"wcag21a\", \"wcag21aa\", \"wcag22aa\"],\n    },\n});\n\nAssert.Empty(results.Violations.Select(v => v.Id).ToArray());\n"
+  - type: callout
+    variant: trust
+    title: Same engine, same result
+    text: 'Both languages report the same three rules on our form: button-name, color-contrast and label. Accessibility is not a JavaScript topic.'
+  - type: callout
+    variant: info
+    title: Demo
+    text: dotnet test — 5 tests, 1 red. The C# result names the same three rules as the TypeScript result.
+- id: mcp
+  layout: content
+  title: The Playwright MCP server
+  blocks:
+  - type: text
+    text: The MCP server gives an AI agent a real browser. Since 1.62 the server is part of Playwright.
+  - type: code
+    language: bash
+    caption: No separate installation is necessary.
+    code: 'npx playwright mcp
+
+      '
+  - type: box
+    title: Why it is different from a screenshot agent
+    items:
+    - label: Input
+      text: The agent gets the accessibility tree, not pixels
+    - label: Result
+      text: Fewer tokens, and the same answer each time
+    - label: Effect
+      text: The agent writes role based locators, because it sees roles
+  - type: callout
+    variant: info
+    title: Demo
+    text: 'Give the agent this task: explore http://localhost:3000. It finds the cooldown without a hint.'
+- id: test-agents
+  layout: content
+  title: Test Agents
+  blocks:
+  - type: flow
+    label: npx playwright init-agents --loop=claude
+    note: Make the agent definitions again after each Playwright update, to get the new tools.
+    phases:
+    - label: Step 1
+      color: trust
+      title: Planner
+      text: Explores the app and writes a test plan in Markdown to specs/.
+    - label: Step 2
+      color: accent
+      title: Generator
+      text: Makes test files from the plan and proves each locator against the running app.
+    - label: Step 3
+      color: green
+      title: Healer
+      text: Runs a failed step again, looks for the element that replaced the old one and proposes a patch.
+  - type: callout
+    variant: info
+    title: Demo
+    text: Change the button text from 'Deploy Now' to 'Ship It'. Let the healer repair the test.
+- id: caveat
+  layout: content
+  title: Where you must hold the reins
+  blocks:
+  - type: callout
+    variant: warning
+    title: A generated test can look correct and be worthless
+    text: 'Typical defects: a hard coded wait, a CSS selector instead of a role, and an assertion that is always true.'
+  - type: code
+    language: typescript
+    caption: This test passes. It tests nothing.
+    code: '// Generated — and wrong.
+
+      await page.waitForTimeout(3000);
+
+      await page.click(''.p-button.p-component.deploy-button'');
+
+      await expect(page.locator(''body'')).toBeVisible();
+
+      '
+  - type: box
+    title: The rule that works for us
+    style: connector
+    items:
+    - label: Agent
+      text: Explores and writes the first draft.
+    - label: Human
+      text: Reviews, then puts it in the pipeline.
+  - type: callout
+    variant: info
+    title: Demo
+    text: Find the three defects in the listing above. Then compare them with tests/locators.spec.ts, the reviewed version of the same test.
+- id: lessons
+  layout: content
+  title: Lessons learned
+  blocks:
+  - type: steps
+    steps:
+    - title: Divide the tests into projects
+      tag: mocked · integration
+      tag_style: opt
+      text: The mocked project needs no container. Thus a developer gets an answer in 10 seconds.
+    - title: Use the real backend only for the important paths
+      text: Each integration test costs minutes. Four of them are enough for us.
+    - title: Start the containers with Compose, not in the test code
+      text: A global setup with Docker Compose is much more stable than a container per test.
+    - title: Switch on traces in the pipeline
+      text: A trace answers the question 'why did it fail in CI' without a second run.
+    - title: Make accessibility a gate on day one
+      text: Three defects in a small form. A large application has hundreds.
+- id: outlook
+  layout: content
+  title: Not in this talk
+  blocks:
+  - type: card-grid
+    columns: 3
+    cards:
+    - variant: trust
+      tag: '1.61'
+      tag_style: opt
+      title: WebAuthn passkeys
+      text: A virtual authenticator tests a login with a passkey, with no hardware.
+    - variant: accent
+      tag: '1.62'
+      tag_style: opt
+      title: Component testing
+      text: A new model with stories and galleries mounts one component in a real browser.
+    - variant: quality
+      tag: '1.48'
+      tag_style: opt
+      title: WebSocket mocking
+      text: routeWebSocket() replaces a realtime backend, for example a live deployment log.
+  - type: list
+    title: Also worth a look
+    items:
+    - storageState with IndexedDB — keep a login between tests
+    - npx playwright trace — read a trace in the terminal, with no window
+    - Copy prompt in the report — give a failed test to an LLM with one click
+- id: questions
+  layout: content
+  title: That's all folks!
+  blocks:
+  - type: columns
+    widths:
+    - 8
+    - 1.6
+    columns:
+    - - type: cta
+        label: Thank you
+        headline: Questions?
+        text: Demo project and slides available at https://github.com/vensas/playwright-2026-talk
+        email: kontakt@vensas.de
+        website: vensas.de
+    - - type: image
+        src: repo-qr.png
+        alt: QR code for the repository
+type: slides
