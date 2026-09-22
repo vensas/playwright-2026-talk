@@ -32,11 +32,11 @@ slide that the pool does not have.
 |---|---|---|
 | Frame | 1–3 | Cover, about me, the demo app |
 | A · Tools and traces | 4–8 | UI mode, test folder ★, traces, artifacts in CI ★, test pyramid ★ |
-| B · Mock or real | 9–13 | `page.route`, Testcontainers, Compose ★, how to choose ★, when to run ★ |
+| B · Mock or real | 9–13 | `page.route`, Testcontainers, how to choose ★, Compose ★, when to run ★ |
 | C · Accessibility | 14 | axe-core as a gate, red to green |
 | D · .NET | 15–17 | The same test in C# with xUnit, what the bindings can and cannot do, axe in C# |
 | E · AI and agents | 18–19 | MCP server, the caveat |
-| Close | 20–21 | Lessons learned, questions |
+| Close | 20–21 | TL;DR with three take-aways, questions |
 
 ★ = a slide from a real project. **Personal experience is the reason for this talk.** All six
 of these slides are in the talk deck. If the talk must become shorter, cut a feature slide,
@@ -132,7 +132,10 @@ and `sections[].content` accepts HTML.
   `box`, `list`, `callout`, `cta`, `columns`, `code`, `mermaid`, `image`.
 - Each slide ends with a `callout` of variant `info`. Keep it to one or two sentences. Use
   title `Demo` when something runs on stage, and title `Walkthrough` when the speaker only
-  shows and explains code.
+  shows and explains code. One exception: a source footnote. The `axe` slide has a `text`
+  block with small grey HTML after the callout, and it prints at the bottom of the slide.
+- **Give a number on a slide its source.** The `axe` slide marks the claim with `*` and puts
+  the sources in that footnote, with a link for each one. The links are live in the PDF.
 - **Do not address the speaker in this callout.** Write a generic instruction that the
   speaker follows on stage and that a listener can also use later to do the same thing.
   Start with the command when there is one. Write "pnpm run test:ui — pick a locator with

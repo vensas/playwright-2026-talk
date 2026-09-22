@@ -66,11 +66,11 @@ sections:
           session C explains it.</li>
       <li><strong>[10]</strong> <code>pnpm run test:integration</code> — the containers are
           warm, then 4 tests run against the real ASP.NET Core API and PostgreSQL.</li>
-      <li><strong>[11]</strong> Show the <code>healthcheck</code> and <code>depends_on</code>
+      <li><strong>[11]</strong> Go through the three questions. Give the answers for the demo
+          app: one service, a small contract, thus 17 mocked tests and 4 integration tests.</li>
+      <li><strong>[12]</strong> Show the <code>healthcheck</code> and <code>depends_on</code>
           in the Compose file. Name the three things that broke when you started each container
           from the test code.</li>
-      <li><strong>[12]</strong> Go through the three questions. Give the answers for the demo
-          app: one service, a small contract.</li>
       <li><strong>[13]</strong> Tell what happened to the team that released an API that was
           not compatible. Then show the three options for the pipeline.</li>
     </ol>
@@ -84,8 +84,9 @@ sections:
       <li><code>pnpm run test:report</code> — show the attached <code>axe-results.json</code>.</li>
       <li>Set <code>ACCESSIBLE_MODE = true</code> in <code>src/a11yMode.ts</code>. Run again
           — green. This is the red to green moment of the talk.</li>
-      <li>Say the limit out loud: an automatic scan finds 30% to 50% of the problems. It does
-          not replace a test with a screen reader.</li>
+      <li>Say the limit out loud: studies find between 25% and 57%. The low number counts the
+          WCAG rules that a machine can check, the high number the defects on real pages. The
+          sources are in the footnote of the slide.</li>
       <li>Set the value back to <code>false</code>.</li>
     </ol>
     <p><strong>Watch out:</strong> set <code>ACCESSIBLE_MODE</code> back to <code>false</code>
@@ -125,12 +126,13 @@ sections:
 - title: Close — Slides 20–21 · 2 min
   content: |
     <ol>
-      <li><strong>[20]</strong> Read the two lessons. They are the two that the six slides
-          from real projects did not already make.</li>
+      <li><strong>[20]</strong> Three take-aways: write few E2E tests, run them after a
+          backend build too, and make accessibility a gate. Read them, do not explain them
+          again — each one has its own slide before.</li>
       <li><strong>[21]</strong> Leave the last slide up for the questions. The QR code goes to
           the repository with the demo project and these slides.</li>
     </ol>
-    <p><strong>Watch out:</strong> if you are late, drop step [20], then slide 17, then slide 6.
+    <p><strong>Watch out:</strong> if you are late, drop slide 17, then slide 6 — keep the TL;DR.
     Do not drop a slide from a real project — they are the reason for this talk.</p>
 tables:
 - title: Command reference

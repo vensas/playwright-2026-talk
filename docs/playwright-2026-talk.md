@@ -129,10 +129,25 @@ Use a **fixture** to share one AxeBuilder config (rule sets, exclusions) org-wid
 
 ### Standards & limitations (say this on stage) **[official / community]**
 - Most US products in 2026 target **WCAG 2.2 Level AA**. ([Qaskills a11y guide](https://qaskills.sh/blog/playwright-accessibility-testing-axe-complete-guide))
-- Automated scans catch **~30–50% of WCAG issues at most** — the official guide is explicit:
-  *"many accessibility problems can only be discovered through manual testing."* Pair automation
-  with manual + inclusive user testing (e.g. Accessibility Insights). ([QA Madness](https://www.qamadness.com/a-you-oriented-guide-to-axe-core-playwright-accessibility-testing/),
-  [TestDino a11y](https://testdino.com/blog/playwright-accessibility))
+- Automated scans catch only a part of the WCAG issues. Pair automation with manual +
+  inclusive user testing (e.g. Accessibility Insights).
+
+  **Primary sources — verified 2026-09-22.** The earlier "~30–50%" line came from two
+  community blog posts ([QA Madness](https://www.qamadness.com/a-you-oriented-guide-to-axe-core-playwright-accessibility-testing/),
+  [TestDino a11y](https://testdino.com/blog/playwright-accessibility)) and matches no single
+  study. The numbers that hold up:
+
+  | Source | Figure | What it counts |
+  |---|---|---|
+  | [Deque](https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/) — 2,000+ audits, ~13,000 pages, ~300,000 issues | **57%** | defect instances fully covered by axe automation (vendor study) |
+  | [Karl Groves](https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/) | **25–33%** | WCAG success criteria that are reliably automatable (25% of A, 17% of AA) |
+  | GDS tool audit, via [Adrian Roselli](http://adrianroselli.com/2023/01/comparing-manual-and-free-automated-wcag-reviews.html) | **30–40%** | of 142 known issues, found by the best tool |
+
+  The figures are not in conflict: Deque counts *defects found*, Groves counts *criteria that
+  can be automated at all*. A small set of automatable rules catches a large share of real
+  defects, because the frequent failures (contrast, missing names, missing labels) are the
+  automatable ones. The slide names the sources, thus the claim survives a question from the
+  audience.
 
 ### Complement: ARIA snapshots (built-in, no plugin)
 `expect(locator).toMatchAriaSnapshot()` (1.49+) and `toMatchAriaSnapshot()` on Page (1.60)

@@ -33,7 +33,7 @@ slides:
     type: text
   - rows:
     - key: Frontend
-      value: React 19, PrimeReact, Rspack — port 3000
+      value: React 19, PrimeReact, Rspack
     - key: Backend
       value: ASP.NET Core minimal API, .NET 10 — POST /api/deploy
     - key: Database
@@ -43,7 +43,7 @@ slides:
     - key: Playwright
       value: 1.63.0 for TypeScript, 1.62.0 for .NET — the bindings follow Node, one version behind
     type: table
-  - text: pnpm run dev — deploy twice in a row. The second deployment is blocked.
+  - text: pnpm run dev
     title: Demo
     type: callout
     variant: info
@@ -68,7 +68,7 @@ slides:
     widths:
     - 5
     - 4
-  - text: pnpm run test:ui — pick a locator with the mouse, then change the test and let it run again.
+  - text: pnpm run test:ui
     title: Demo
     type: callout
     variant: info
@@ -136,7 +136,7 @@ slides:
     filename: .github/workflows/e2e.yml
     language: yaml
     type: code
-  - text: Copy the two steps into your workflow. A red build then gives you the trace, and you do not repeat the run to find out what happened.
+  - text: Apply to your CICD workflow.
     title: Walkthrough
     type: callout
     variant: info
@@ -161,7 +161,7 @@ slides:
     style: connector
     title: What I take from this
     type: box
-  - text: Count the E2E tests in your project. Then ask which of them a unit test or a component test can do.
+  - text: Check which E2E tests in your project could be replaced by a unit or a component test.
     title: Walkthrough
     type: callout
     variant: info
@@ -191,7 +191,6 @@ slides:
       text: Fast and stable. Blind to the backend.
     - label: Real
       text: Finds integration faults. Slow.
-    note: Use mocks for the many tests. Use the real backend for the few important paths.
     style: connector
     title: Mock or real
     type: box
@@ -202,6 +201,28 @@ slides:
   id: real-backend
   layout: content
   title: The real backend
+- blocks:
+  - label: From a real project
+    title: Mock or real — how I choose
+    type: heading
+  - text: The two approaches are not in competition. Both are correct, and both add value. I choose with the complexity of the project.
+    type: text
+  - items:
+    - label: Services
+      text: How many services does the scenario touch?
+    - label: Contract
+      text: How complex is the API contract?
+    - label: Test
+      text: How complex is the test itself?
+    note: Decide based on your environment and complexity of the project.
+    title: Three questions before I decide
+    type: box
+  - text: The demo app has one service and a small contract. Thus it has 17 mocked tests and 4 integration tests.
+    title: Walkthrough
+    type: callout
+    variant: info
+  id: mock-or-real-choice
+  layout: content
 - blocks:
   - label: From a real project
     title: Start the dependencies with Compose
@@ -224,28 +245,6 @@ slides:
     type: callout
     variant: info
   id: compose-setup
-  layout: content
-- blocks:
-  - label: From a real project
-    title: Mock or real — how I choose
-    type: heading
-  - text: The two approaches are not in competition. Both are correct, and both add value. I choose with the complexity of the project.
-    type: text
-  - items:
-    - label: Services
-      text: How many services does the scenario touch?
-    - label: Contract
-      text: How complex is the API contract?
-    - label: Test
-      text: How complex is the test itself?
-    note: Your environment and your test plan give the answer, not a rule.
-    title: Three questions before I decide
-    type: box
-  - text: The demo app has one service and a small contract. Thus it has 17 mocked tests and 4 integration tests.
-    title: Walkthrough
-    type: callout
-    variant: info
-  id: mock-or-real-choice
   layout: content
 - blocks:
   - label: From a real project
@@ -275,14 +274,16 @@ slides:
     filename: tests/accessibility.spec.ts
     language: typescript
     type: code
-  - text: An automatic scan finds about 30% to 50% of the WCAG problems. It does not replace a test with a screen reader.
-    title: Be honest about the limit
+  - text: 'Studies find between 25% and 57%*: Depending on what they count - WCAG rules (low) vs. real page defects (high)'
+    title: Expectation management
     type: callout
     variant: warning
   - text: pnpm run test:a11y fails with button-name, color-contrast and label. Set ACCESSIBLE_MODE = true in src/a11yMode.ts and it passes.
     title: Demo
     type: callout
     variant: info
+  - text: <span style="font-size:13px;color:var(--text-secondary);">* <a href="https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/" style="color:var(--text-trust);">Deque, 57%</a> · <a href="http://adrianroselli.com/2023/01/comparing-manual-and-free-automated-wcag-reviews.html" style="color:var(--text-trust);">UK Government Digital Service tool audit, 30–40%</a> · <a href="https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/" style="color:var(--text-trust);">Karl Groves, 25–33%</a></span>
+    type: text
   id: axe
   layout: content
   title: Accessibility as a gate
@@ -374,7 +375,7 @@ slides:
       text: The agent writes role based locators, because it sees roles
     title: Why it is different from a screenshot agent
     type: box
-  - text: 'Give the agent this task: explore http://localhost:3000. It finds the cooldown without a hint.'
+  - text: 'Give the agent this task: explore http://localhost:3000.'
     title: Demo
     type: callout
     variant: info
@@ -413,18 +414,18 @@ slides:
   id: caveat
   layout: content
   title: Where you must hold the reins
-- blocks:
-  - steps:
-    - tag: mocked · integration
-      tag_style: opt
-      text: The mocked project needs no container. Thus a developer gets an answer in 10 seconds.
-      title: Divide the tests into projects
-    - text: Three defects in a small form. A large application has hundreds.
-      title: Make accessibility a gate on day one
-    type: steps
-  id: lessons
+- id: lessons
   layout: content
-  title: Lessons learned
+  title: TL;DR
+  blocks:
+  - steps:
+    - title: Write few E2E tests. The test pyramid still holds.
+      text: A suite that became very large made the CI runners unreliable. An unreliable E2E test is worse than no E2E test.
+    - title: An E2E test with a real backend is not a frontend job.
+      text: A team released an API that was not compatible, because nobody ran the tests. Run them after a backend build too.
+    - title: Make accessibility a gate on day one.
+      text: The European Accessibility Act applies since June 2025. axe-core is a few lines in the test.
+    type: steps
 - blocks:
   - columns:
     - - email: kontakt@vensas.de
