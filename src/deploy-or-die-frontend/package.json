@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "rspack serve",
     "build": "rspack build",
+    "typecheck": "tsc -b",
     "preview": "rspack preview",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
@@ -29,6 +30,7 @@
     "@playwright/test": "^1.63.0",
     "@rspack/cli": "^2.2.6",
     "@rspack/core": "^2.2.6",
+    "@rspack/dev-server": "^2.2.1",
     "@testcontainers/postgresql": "^12.1.0",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",

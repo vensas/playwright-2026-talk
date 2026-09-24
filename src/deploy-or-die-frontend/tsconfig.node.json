@@ -1,10 +1,27 @@
 {
   "compilerOptions": {
+    // A referenced project has to be composite, and a composite project has to
+    // emit. Nothing consumes the output, so it goes to a scratch directory.
     "composite": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./node_modules/.tmp/tsconfig.node",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "skipLibCheck": true,
+
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+
+    "strict": true,
+
+    // The Playwright config, the fixtures and the build config all run in
+    // Node, so they need the Node globals (process, require, ...).
+    "types": ["node"]
   },
-  "include": ["rspack.config.js"]
+  "include": ["rspack.config.js", "playwright.config.ts", "tests"]
 }

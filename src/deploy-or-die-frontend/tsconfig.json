@@ -10,7 +10,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
     "jsx": "react-jsx",
+
+    // Browser code only: the Node globals belong to tsconfig.node.json.
+    "types": [],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
