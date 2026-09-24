@@ -1,30 +1,17 @@
 # Playwright Beyond the Happy Path
 
 Slides and demo project for the 2026 Playwright talk.
-**.NET User Group Karlsruhe · 24 September 2026.**
-An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-11-2025-playwright).
 
 **E2E tests, accessibility and MCP in practice.** Sven Hennessen · vensas GmbH
 
-## The deck for the session
-
-> ### `docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf`
->
-> **This is the deck for the .NET User Group Karlsruhe on 24 September 2026.**
-
-**Note `docs/playwright-content-pool.pdf`.** That file holds every slide. It is
-the pool that a talk deck takes its slides from, and it is not tied to an event.
+## The slide decks
 
 ## Slides
 
-Two documents, both made with the [vensas-doc-generator](../vensas-doc-generator):
-
-| Document | Type | Content |
-|---|---|---|
-| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | `slides` | **The talk deck** for 24 September 2026. |
-| `playwright-content-pool` | `slides` | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
-
-Make a new slide in the pool first, then copy it into a talk deck.
+| Document                                              | Content                                                                                                        |
+|-------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | **The talk deck** for .NET User Group Karlsruhe on 24 September 2026.                                                                       |
+| `playwright-content-pool`                             | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
 
 The YAML files are the single source of truth. One command generates all PDFs:
 
@@ -33,11 +20,6 @@ The YAML files are the single source of truth. One command generates all PDFs:
 ./generate-docs.sh slides       # only the talk deck
 ./generate-docs.sh pool         # only the content pool
 ```
-
-The script expects the [vensas-doc-generator](../vensas-doc-generator) beside this
-repository. Set `DOC_GENERATOR_DIR` to give a different path.
-
-Each slide carries its own `Demo` callout, so the deck needs no separate stage script.
 
 ## Demo project: "Deploy or Die"
 
@@ -106,24 +88,24 @@ export const ACCESSIBLE_MODE = false;
 
 With `false` the deploy form has three real WCAG defects:
 
-| axe-core rule | Defect | WCAG |
-|---|---|---|
-| `label` | The environment field has no label | 4.1.2 |
-| `button-name` | The history button has only an icon and no name | 4.1.2 |
+| axe-core rule    | Defect                                                     | WCAG  |
+|------------------|------------------------------------------------------------|-------|
+| `label`          | The environment field has no label                         | 4.1.2 |
+| `button-name`    | The history button has only an icon and no name            | 4.1.2 |
 | `color-contrast` | The hint text has a contrast of 1.9:1, and 4.5:1 is needed | 1.4.3 |
 
 Set the value to `true` and all 17 tests pass. This is the red to green step on stage.
 
 ## Versions
 
-| Component | Version |
-|---|---|
-| `@playwright/test` | 1.63.0 |
-| `@axe-core/playwright` | 4.13.0 |
-| `Microsoft.Playwright.Xunit.v3` | 1.62.0 |
-| `Deque.AxeCore.Playwright` | 4.13.0 |
-| Backend | .NET 10 |
-| C# tests | .NET 10, Microsoft Testing Platform |
+| Component                       | Version                             |
+|---------------------------------|-------------------------------------|
+| `@playwright/test`              | 1.63.0                              |
+| `@axe-core/playwright`          | 4.13.0                              |
+| `Microsoft.Playwright.Xunit.v3` | 1.62.0                              |
+| `Deque.AxeCore.Playwright`      | 4.13.0                              |
+| Backend                         | .NET 10                             |
+| C# tests                        | .NET 10, Microsoft Testing Platform |
 
 ## Note
 
