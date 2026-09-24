@@ -2,18 +2,16 @@
 #
 # Generates the talk documents with the vensas-doc-generator.
 #
-#   ./generate-docs.sh                  all three documents
+#   ./generate-docs.sh                  both documents
 #   ./generate-docs.sh slides           only the talk deck
 #   ./generate-docs.sh pool             only the content pool
-#   ./generate-docs.sh script           only the demo script
 #   ./generate-docs.sh -v               show the full generator output
 #
 # The generator repository must be beside this repository. Use the environment
 # variable DOC_GENERATOR_DIR to give a different path.
 #
-# The talk deck and the demo script are coupled. If you change one, read the
-# checklist "Keep the talk deck and the demo script in sync" in AGENTS.md.
-# The content pool holds every slide and has no demo script.
+# The content pool holds every slide. A talk deck takes the slides that it
+# needs from the pool. Each slide carries its own Demo callout.
 
 set -euo pipefail
 
@@ -23,7 +21,6 @@ GENERATOR_DIR="${DOC_GENERATOR_DIR:-$REPO_DIR/../vensas-doc-generator}"
 
 DECK="playwright-beyond-the-happy-path-dnug-ka-2026-09-24"
 POOL="playwright-content-pool"
-SCRIPT_DOC="playwright-demo-script"
 
 VERBOSE=0
 TARGETS=()
@@ -33,15 +30,14 @@ for arg in "$@"; do
     -v|--verbose) VERBOSE=1 ;;
     slides|deck)  TARGETS+=("$DECK") ;;
     pool)         TARGETS+=("$POOL") ;;
-    script|demo)  TARGETS+=("$SCRIPT_DOC") ;;
-    -h|--help)    sed -n '2,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)    sed -n '2,14p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)            echo "Unknown option: $arg. Use -h for help." >&2; exit 2 ;;
   esac
 done
 
 # No target given: make all documents.
 if [ ${#TARGETS[@]} -eq 0 ]; then
-  TARGETS=("$DECK" "$POOL" "$SCRIPT_DOC")
+  TARGETS=("$DECK" "$POOL")
 fi
 
 if [ ! -d "$GENERATOR_DIR" ]; then

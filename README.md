@@ -12,39 +12,32 @@ An update of the [Webworker Meetup Saar 11/2025 talk](../webworker-meetup-saar-1
 >
 > **This is the deck for the .NET User Group Karlsruhe on 24 September 2026.**
 
-The stage script that belongs to it is
-`docs/playwright-demo-script.pdf`, which also holds the time box for each session.
-
 **Note `docs/playwright-content-pool.pdf`.** That file holds every slide. It is
 the pool that a talk deck takes its slides from, and it is not tied to an event.
 
-## Slides and demo script
+## Slides
 
-Three documents, all made with the [vensas-doc-generator](../vensas-doc-generator):
+Two documents, both made with the [vensas-doc-generator](../vensas-doc-generator):
 
 | Document | Type | Content |
 |---|---|---|
 | `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | `slides` | **The talk deck** for 24 September 2026. |
 | `playwright-content-pool` | `slides` | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
-| `playwright-demo-script` | `report` | The stage script for the **talk deck**. The demos as 6 sessions, with brief steps and a command reference. |
 
 Make a new slide in the pool first, then copy it into a talk deck.
 
 The YAML files are the single source of truth. One command generates all PDFs:
 
 ```sh
-./generate-docs.sh              # all three documents
+./generate-docs.sh              # both documents
 ./generate-docs.sh slides       # only the talk deck
 ./generate-docs.sh pool         # only the content pool
-./generate-docs.sh script       # only the demo script
 ```
 
 The script expects the [vensas-doc-generator](../vensas-doc-generator) beside this
 repository. Set `DOC_GENERATOR_DIR` to give a different path.
 
-The demo script refers to slides of the talk deck by number. **If you change the talk deck,
-correct the demo script too** — see the checklist in `AGENTS.md`. The content pool has no
-demo script.
+Each slide carries its own `Demo` callout, so the deck needs no separate stage script.
 
 ## Demo project: "Deploy or Die"
 

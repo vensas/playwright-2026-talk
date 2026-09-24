@@ -1,7 +1,6 @@
 DO write all slides, code and comments in ASD-STE100 (Simplified Technical English).
 DO keep `AGENTS.md` and `README.md` up to date with the latest implementations.
 DO regenerate the PDF with `./generate-docs.sh` after each change to a document YAML.
-DO keep the talk deck and the demo script in sync — see "Keep the talk deck and the demo script in sync".
 DO ask before you change the talk content — the speaker decides what goes on a slide.
 DO NOT put the content of `AGENTS.md` in the presentation.
 DO NOT commit, push or open a pull request without a request from the user.
@@ -35,10 +34,10 @@ slide that the pool does not have.
 | B · Mock or real | 9–13 | `page.route`, Testcontainers, how to choose ★, Compose ★, when to run ★ |
 | C · Accessibility | 14 | axe-core as a gate, red to green |
 | D · .NET | 15–17 | The same test in C# with xUnit, what the bindings can and cannot do, axe in C# |
-| E · AI and agents | 18–19 | MCP server, the caveat |
+| E · AI and agents | 18–19 | The caveat ★, MCP server and playwright-cli |
 | Close | 20–21 | TL;DR with three take-aways, questions |
 
-★ = a slide from a real project. **Personal experience is the reason for this talk.** All six
+★ = a slide from a real project. **Personal experience is the reason for this talk.** All seven
 of these slides are in the talk deck. If the talk must become shorter, cut a feature slide,
 not one of these.
 
@@ -54,8 +53,7 @@ C# slides; the others are a feature tour, and experience beats features here.
 Slide 16 of the talk deck (`dotnet-parity`) lists the full split. The pool also has slides for
 test locks and isolated retries, and both carry a caveat line. Do not remove these lines: the
 audience is a .NET user group, and the claim would otherwise be wrong for them. The talk deck
-does not show these two features, thus the speaker says in one sentence what they are — the
-demo script has this step.
+does not show these two features, thus the speaker says in one sentence what they are.
 
 ### Out of scope (the speaker decided this)
 
@@ -67,7 +65,7 @@ These three lines are on the `outlook` slide, which is in the pool and not in th
 
 ## Documents
 
-All three documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do
+Both documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do
 **not** use Marp any more. The old Marp deck was deleted.
 
 ```
@@ -76,23 +74,20 @@ docs/
   playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, do not edit
   playwright-content-pool.yaml                               the content pool — 30 slides, theme dark
   playwright-content-pool.pdf                                generated, do not edit
-  playwright-demo-script.yaml                                the stage script — type: report, 8 sections
-  playwright-demo-script.pdf                                 generated, do not edit
   avatar.jpg                                                 the photo on the about-me slide
   repo-qr.png                                                the QR code on the last slide
 ```
 
-A talk deck gets an event suffix: `<name>-<event>-<date>`. The content pool and the demo
-script have no suffix, because there is one of each.
+A talk deck gets an event suffix: `<name>-<event>-<date>`. The content pool has no suffix,
+because there is one of it.
 
-The three YAML files are the only source of truth. Use `generate-docs.sh` in the repository
+The two YAML files are the only source of truth. Use `generate-docs.sh` in the repository
 root after each change — it makes all PDFs with one command:
 
 ```sh
-./generate-docs.sh              # all three documents
+./generate-docs.sh              # both documents
 ./generate-docs.sh slides       # only the talk deck
 ./generate-docs.sh pool         # only the content pool
-./generate-docs.sh script       # only the demo script
 ./generate-docs.sh -v           # show the full generator output
 ```
 
@@ -103,19 +98,6 @@ the page count of each PDF, and it stops with exit code 1 if a document fails.
 If Puppeteer reports that it cannot find Chrome, run `npx puppeteer browsers install chrome`
 in the generator repository. The script gives this hint when it sees the error.
 
-### The demo script (type `report`)
-
-The stage script uses document type `report`, not `training-material`. Two reasons:
-the `training-material` layout prints the German labels "Aufgabe" and "Hinweis", and its
-`description` field does not render Markdown. The `report` layout has no visible German text,
-and `sections[].content` accepts HTML.
-
-- Write `sections[].content` as **HTML**, not Markdown: `<ol><li>…</li></ol>` and `<code>…</code>`.
-- The layout styles `ol`, `li` and inline `code`. It does **not** style `pre`. Do not use
-  code blocks — put a command in inline `<code>`.
-- Each section ends with a `<p><strong>Watch out:</strong> …</p>` line for the trap in that session.
-- `tables` renders after all sections. The command reference at the end uses this.
-
 ### Slide YAML rules
 
 - Deck level `theme: dark`. The theme is not set for each slide.
@@ -123,7 +105,7 @@ and `sections[].content` accepts HTML.
   and also a `heading` block that is not the first block — this makes two headings. When the
   **first** block is a `heading`, the generator does not print the slide `title`. Thus a slide
   uses one of the two, not both.
-- **The six slides from real projects carry a kicker.** They have no slide `title`. Their
+- **The seven slides from real projects carry a kicker.** They have no slide `title`. Their
   first block is a `heading` with `label: From a real project` and the title. The label prints
   above the title in small orange capitals, and the heading keeps one rule. Do not use the
   `label` of a `text` block for this — a `text` label prints a second rule below the rule of
@@ -147,40 +129,6 @@ and `sections[].content` accepts HTML.
   generated PDF page after a change.
 - The generator rewrites the YAML file when it runs. It removes comments and quotation
   marks. Edit the file with a YAML parser, not with a text search for a quoted string.
-
-## Keep the talk deck and the demo script in sync
-
-`docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml` (the **talk deck**) and
-`docs/playwright-demo-script.yaml` (the stage script) are **coupled**. The demo script
-refers to slides by number. If you change one file and not the other, the speaker reads a
-step for a slide that is no longer there.
-
-**The content pool has no demo script.** A change in the pool alone breaks nothing. It
-becomes relevant when a slide moves from the pool into the talk deck.
-
-**After each change to the talk deck or to the script, check all five points below and
-correct both files.**
-
-| # | Coupling | What breaks if you forget |
-|---|---|---|
-| 1 | **Slide numbers** — the demo script writes them as `[4]`, and in each heading as "Slides 4–8" | A step points to the wrong slide |
-| 2 | **The `Demo` / `Walkthrough` callout** on a slide and the step for that slide in the script | The slide promises one thing, the speaker does another |
-| 3 | **Time boxes** — the minutes in each script heading, and the sum in the script intro | The talk does not fit in the 60 minute slot with questions |
-| 4 | **Commands** — the `scripts` in `src/deploy-or-die-frontend/package.json` | A command on stage does not exist |
-| 5 | **The command reference table** at the end of the script | The quick reference is wrong |
-
-If you **add, remove or move a slide in the talk deck**, every later slide number changes.
-Renumber the whole demo script, not only the slide that you touched.
-
-Then generate the PDFs with one command, and look at them:
-
-```sh
-./generate-docs.sh
-```
-
-Only write a demo step that you have run. Do not promise a failure on stage that you did not
-see. Example: the four integration tests write no shared row, so they do **not** reliably
-conflict when you remove the test lock. The script says this.
 
 ## Demo project — "Deploy or Die"
 

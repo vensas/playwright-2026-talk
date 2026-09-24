@@ -43,7 +43,7 @@ slides:
     - key: Playwright
       value: 1.63.0 for TypeScript, 1.62.0 for .NET — the bindings follow Node, one version behind
     type: table
-  - text: pnpm run dev
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">aspire run</span><span style=\"display:block;margin-top:6px;\">Let's look at the application</span>"
     title: Demo
     type: callout
     variant: info
@@ -51,24 +51,14 @@ slides:
   layout: content
   title: 'The demo app: Deploy or Die'
 - blocks:
-  - columns:
-    - - code: 'pnpm run test:ui
-
-          '
-        language: bash
-        type: code
-    - - items:
-        - Watch mode — the test runs again after each file change
-        - Time travel — go back to each step and see the DOM
-        - Pick locator — click an element to get the locator
-        - Network, console and source in one window
-        title: What you get
-        type: list
-    type: columns
-    widths:
-    - 5
-    - 4
-  - text: pnpm run test:ui
+  - items:
+    - Watch mode — the test runs again after each file change
+    - Time travel — go back to each step and see the DOM
+    - Pick locator — click an element to get the locator
+    - Network, console and source in one window
+    title: What you get
+    type: list
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">pnpm run test:ui</span>"
     title: Demo
     type: callout
     variant: info
@@ -101,7 +91,7 @@ slides:
     title: What it cost us
     type: box
   - text: Look at testDir in your config. If it points at the source folder, move the tests.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: test-folder
@@ -118,7 +108,7 @@ slides:
     - The console output and the source code
     title: A trace contains
     type: list
-  - text: npx playwright show-trace test-results/.../trace.zip — go back in time and change to the ARIA tab.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">npx playwright show-trace test-results/.../trace.zip</span>"
     title: Demo
     type: callout
     variant: info
@@ -137,7 +127,7 @@ slides:
     language: yaml
     type: code
   - text: Apply to your CICD workflow.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: ci-artifacts
@@ -146,7 +136,7 @@ slides:
   - label: From a real project
     title: Keep the test pyramid
     type: heading
-  - text: UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more time to write and to keep than a unit test.
+  - text: UI mode and the agents make an E2E test look cheap. It is not. An E2E test needs more effort to write and to maintain than a unit test.
     type: text
   - text: The team wrote mostly Playwright tests. React Testing Library was sufficient for 80% of these scenarios. The suite became very large, and then the CI runners became unreliable.
     title: From a team that I mentored
@@ -162,7 +152,7 @@ slides:
     title: What I take from this
     type: box
   - text: Check which E2E tests in your project could be replaced by a unit or a component test.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: pyramid
@@ -173,7 +163,7 @@ slides:
     filename: tests/deploy-failure.spec.ts
     language: typescript
     type: code
-  - text: pnpm run test:mocked — 17 tests in about 10 seconds, with no backend and no database.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">pnpm run test:mocked</span><span style=\"display:block;margin-top:6px;\">17 tests in about 10 seconds, with no backend and no database.</span>"
     title: Demo
     type: callout
     variant: info
@@ -194,7 +184,7 @@ slides:
     style: connector
     title: Mock or real
     type: box
-  - text: pnpm run test:integration — the containers start, then 4 tests run against the real API.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">pnpm run test:integration</span><span style=\"display:block;margin-top:6px;\">The containers start, then 4 tests run against the real API.</span>"
     title: Demo
     type: callout
     variant: info
@@ -218,7 +208,7 @@ slides:
     title: Three questions before I decide
     type: box
   - text: The demo app has one service and a small contract. Thus it has 17 mocked tests and 4 integration tests.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: mock-or-real-choice
@@ -241,7 +231,7 @@ slides:
     language: yaml
     type: code
   - text: Start the containers one time in a global setup, not for each test.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: compose-setup
@@ -263,7 +253,7 @@ slides:
     title: What I recommend
     type: list
   - text: Find out where your E2E tests run today. Then add the backend build as a trigger, or run them nightly.
-    title: Walkthrough
+    title: Recommendation
     type: callout
     variant: info
   id: when-to-run
@@ -274,11 +264,11 @@ slides:
     filename: tests/accessibility.spec.ts
     language: typescript
     type: code
-  - text: 'Studies find between 25% and 57%*: Depending on what they count - WCAG rules (low) vs. real page defects (high)'
+  - text: "Studies find between 25% and 57%*: Depending on what they count - WCAG rules (low) vs. real page defects (high)<span style=\"display:block;margin-top:8px;\"><strong style=\"color:var(--text-accent);\">Recommendation:</strong> test the rest by hand. Do a keyboard walkthrough and a screen reader run for each feature.</span>"
     title: Expectation management
     type: callout
     variant: warning
-  - text: pnpm run test:a11y fails with button-name, color-contrast and label. Set ACCESSIBLE_MODE = true in src/a11yMode.ts and it passes.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">pnpm run test:a11y</span><span style=\"display:block;margin-top:6px;\">Fails with button-name, color-contrast and label. Set <code style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);\">ACCESSIBLE_MODE = true</code> in <code style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);\">src/a11yMode.ts</code> and it passes.</span>"
     title: Demo
     type: callout
     variant: info
@@ -293,7 +283,7 @@ slides:
     filename: DeployTests.cs
     language: csharp
     type: code
-  - text: dotnet test — 4 tests pass. Compare the C# file with the TypeScript file.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">aspire run\ndotnet test</span><span style=\"display:block;margin-top:6px;\">4 tests pass.</span>"
     title: Demo
     type: callout
     variant: info
@@ -333,7 +323,7 @@ slides:
         title: Playwright Test only
         type: box
     type: columns
-  - text: npx playwright codegen --target csharp-xunit http://localhost:3000 — the recorder writes C#, not TypeScript.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">npx playwright codegen --target csharp-xunit http://localhost:3000</span><span style=\"display:block;margin-top:6px;\">The recorder writes C#, not TypeScript.</span>"
     title: Demo
     type: callout
     variant: info
@@ -350,7 +340,7 @@ slides:
     title: Same engine, same result
     type: callout
     variant: trust
-  - text: dotnet test — 5 tests, 1 red. Compare the output with the TypeScript run.
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">aspire run\ndotnet test</span><span style=\"display:block;margin-top:6px;\">5 tests, 1 red. Compare the output with the TypeScript run.</span>"
     title: Demo
     type: callout
     variant: info
@@ -358,37 +348,14 @@ slides:
   layout: content
   title: Accessibility in C#
 - blocks:
-  - text: The MCP server gives an AI agent a real browser. Since 1.62 the server is part of Playwright.
-    type: text
-  - caption: No separate installation is necessary.
-    code: 'npx playwright mcp
-
-      '
-    language: bash
-    type: code
-  - items:
-    - label: Input
-      text: The agent gets the accessibility tree, not pixels
-    - label: Result
-      text: Fewer tokens, and the same answer each time
-    - label: Effect
-      text: The agent writes role based locators, because it sees roles
-    title: Why it is different from a screenshot agent
-    type: box
-  - text: 'Give the agent this task: explore http://localhost:3000.'
-    title: Demo
-    type: callout
-    variant: info
-  id: mcp
-  layout: content
-  title: The Playwright MCP server
-- blocks:
+  - label: From a real project
+    title: Where you must hold the reins
+    type: heading
   - text: 'Typical defects: a hard coded wait, a CSS selector instead of a role, and an assertion that is always true.'
     title: A generated test can look correct and be worthless
     type: callout
     variant: warning
-  - caption: This test passes. It tests nothing.
-    code: '// Generated — and wrong.
+  - code: '// Generated — and wrong.
 
       await page.waitForTimeout(3000);
 
@@ -407,13 +374,42 @@ slides:
     style: connector
     title: The rule that works for us
     type: box
-  - text: Compare the listing with tests/locators.spec.ts — the reviewed version of the same test.
-    title: Demo
+  - text: "Use a coding agent for the first draft, not <code style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);\">playwright codegen</code>. The recorder writes CSS selectors and fixed waits. An agent reads the accessibility tree, thus it gives role based locators. Review the result in each case."
+    title: Recommendation
     type: callout
     variant: info
   id: caveat
   layout: content
-  title: Where you must hold the reins
+- blocks:
+  - text: Both give the agent the accessibility tree, not pixels. Thus the agent writes role based locators. The server is part of Playwright since 1.62, the CLI is a separate package.
+    type: text
+  - columns:
+    - - items:
+        - label: Tools
+          text: A fixed tool schema, always in the context
+        - label: Loop
+          text: The agent clicks through the page
+        - label: Browser
+          text: The server starts its own
+        title: MCP server
+        type: box
+    - - items:
+        - label: Tokens
+          text: Commands only, thus no tool schema
+        - label: Attach
+          text: A browser that runs, with your session
+        - label: Reach
+          text: run-code puts a whole snippet in the page
+        title: playwright-cli
+        type: box
+    type: columns
+  - text: "<span style=\"font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:15px;white-space:pre;display:block;color:var(--text-primary);\">npx playwright mcp --port 7890            # the server, no installation\nnpm install -g @playwright/cli@latest     # the CLI, one installation\nplaywright-cli attach --extension=chrome  # take the browser that is open\nplaywright-cli -s=chrome run-code \"async page => {   # one command, not ten clicks\n  await page.clock.install(); await page.reload();\n  await page.getByRole('button', { name: /Deploy Now/i }).click();\n  await page.clock.fastForward('00:30'); }\"</span><span style=\"font-size:13px;color:var(--text-secondary);display:block;margin-top:8px;\">Both drive the same browser. Only the CLI takes a browser that already runs.</span>"
+    title: Demo
+    type: callout
+    variant: info
+  id: mcp
+  layout: content
+  title: A real browser for an agent — two ways
 - id: lessons
   layout: content
   title: TL;DR
@@ -428,13 +424,10 @@ slides:
     type: steps
 - blocks:
   - columns:
-    - - email: kontakt@vensas.de
-        headline: Questions?
-        label: Thank you
-        text: Demo project and slides available at https://github.com/vensas/playwright-2026-talk
-        type: cta
-        website: vensas.de
+    - - text: "<div class=\"card\" style=\"background:var(--slide-bg-card);border:2px solid var(--highlight);\"><div class=\"label\" style=\"margin-bottom:12px;\">Thank you</div><h3 style=\"margin-bottom:12px;\">Questions?</h3><p style=\"font-size:15px;\">Demo project and slides available at <a href=\"https://github.com/vensas/playwright-2026-talk\" style=\"color:inherit;text-decoration:underline;\">https://github.com/vensas/playwright-2026-talk</a></p><div style=\"margin-top:16px;display:flex;flex-direction:column;gap:10px;\"><a href=\"https://www.linkedin.com/in/svenhennessen/\" style=\"display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-accent);\"><span style=\"display:flex;align-items:center;\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"currentColor\" aria-hidden=\"true\" style=\"flex:0 0 auto;\"><path d=\"M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z\"/></svg></span><span style=\"font-size:15px;font-weight:600;\">https://www.linkedin.com/in/svenhennessen/</span></a><a href=\"mailto:kontakt@vensas.de\" style=\"display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-accent);\"><span style=\"display:flex;align-items:center;\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"currentColor\" aria-hidden=\"true\" style=\"flex:0 0 auto;\"><path d=\"M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm2 .5V18h16V6.5l-8 5-8-5zM4.6 6 12 10.6 19.4 6H4.6z\"/></svg></span><span style=\"font-size:15px;font-weight:600;\">kontakt@vensas.de</span></a><a href=\"https://vensas.de\" style=\"display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-trust);\"><span style=\"display:flex;align-items:center;\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"currentColor\" aria-hidden=\"true\" style=\"flex:0 0 auto;\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.6 15.6 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14A7.96 7.96 0 0 1 4 12c0-.69.1-1.36.26-2h3.38a16.6 16.6 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.07 16zm2.95-8H5.07a7.99 7.99 0 0 1 4.33-3.56A15.6 15.6 0 0 0 8.02 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66a14.9 14.9 0 0 1 0-4h4.68a14.9 14.9 0 0 1 0 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a7.99 7.99 0 0 1-4.33 3.56zM16.36 14a16.6 16.6 0 0 0 0-4h3.38a8 8 0 0 1 0 4h-3.38z\"/></svg></span><span style=\"font-size:15px;font-weight:600;\">vensas.de</span></a></div></div>"
+        type: text
     - - alt: QR code for the repository
+        caption: Slides & Demo
         src: repo-qr.png
         type: image
     type: columns
