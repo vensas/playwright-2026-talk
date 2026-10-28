@@ -10,47 +10,56 @@ DO NOT commit, push or open a pull request without a request from the user.
 "Playwright Beyond the Happy Path — E2E tests, accessibility and MCP in practice."
 An update of the Webworker Meetup Saar 11/2025 talk (`../webworker-meetup-saar-11-2025-playwright`).
 
-- Audience: developers. The talk is code first.
-- Event: **.NET User Group Karlsruhe, 24 September 2026**, DJK Ost, Karlsruhe.
-  The Meetup listing uses the German title, but the deck stays English — the speaker decided this.
-  The audience is .NET developers. This is why the .NET block is three slides, not one.
+- Audience: developers. The talk is code first. The deck is English.
+- **Current event: IT-Tage 2026, Frankfurt** (Kap Europa), **Wednesday 9 December 2026,
+  16:00–16:45**. A 45 minute slot. The audience is broad, not only .NET developers. This is
+  why the .NET block is one slide.
+- Earlier event: .NET User Group Karlsruhe, 24 September 2026. That deck is finished.
+  **Do not change it** — not its YAML and not its PDF.
 
-### Two decks
+### Three decks
 
 | Deck | File | Slides | Purpose |
 |---|---|---|---|
-| Talk deck | `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | 21 | The event on 2026-09-24. 48 minutes on stage, plus about 10 minutes for questions in the 60 minute slot. |
-| Content pool | `playwright-content-pool` | 30 | Every slide. Not tied to an event. A new talk deck takes the slides that it needs from here. |
+| Talk deck (current) | `playwright-beyond-the-happy-path-it-tage-2026-12-09` | 20 | IT-Tage, 2026-12-09. 45 minutes, including an MCP demo slot. No Demo callouts. |
+| Talk deck (earlier) | `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | 21 | .NET User Group Karlsruhe, 2026-09-24. Frozen. |
+| Content pool | `playwright-content-pool` | 34 | Every slide. Not tied to an event. A new talk deck takes the slides that it needs from here. |
 
 **Make a new slide in the pool first.** Then copy it into a talk deck. A talk deck holds no
-slide that the pool does not have.
+slide that the pool does not have. A talk deck can leave out the `Demo` callout of a pool
+slide — the IT-Tage deck leaves out all of them. All other blocks stay the same as in the pool.
 
-### The blocks of the talk deck
+The pool has the newest text of each slide. The Karlsruhe deck has an older text of some
+slides. This is correct: that deck is frozen.
+
+### The blocks of the IT-Tage deck
 
 | Block | Slides | Subject |
 |---|---|---|
 | Frame | 1–3 | Cover, about me, the demo app |
 | A · Tools and traces | 4–8 | UI mode, test folder ★, traces, artifacts in CI ★, test pyramid ★ |
-| B · Mock or real | 9–13 | `page.route`, Testcontainers, how to choose ★, Compose ★, when to run ★ |
-| C · Accessibility | 14 | axe-core as a gate, red to green |
-| D · .NET | 15–17 | The same test in C# with xUnit, what the bindings can and cannot do, axe in C# |
-| E · AI and agents | 18–19 | The caveat ★, MCP server and playwright-cli |
-| Close | 20–21 | TL;DR with three take-aways, questions |
+| B · Mock or real | 9–12 | `page.route`, how to choose ★ (with the mock-or-real box), Compose ★, when to run ★ |
+| C · More pages | 13 | Two pages in one context, two users in two contexts |
+| D · Accessibility | 14 | axe-core as a gate |
+| E · .NET | 15 | The same test in C#, and what is Node only (`dotnet-brief`) |
+| F · AI and agents | 16–18 | The caveat ★, the MCP demo slot, playwright-cli `run-code` |
+| Close | 19–20 | TL;DR with four take-aways (the fourth is AI), questions |
 
 ★ = a slide from a real project. **Personal experience is the reason for this talk.** All seven
 of these slides are in the talk deck. If the talk must become shorter, cut a feature slide,
-not one of these.
+not one of these. The first candidate is UI mode (slide 4).
 
-### The 9 slides that the talk deck does not have
+### The slides that the IT-Tage deck does not have
 
 They stay in the pool: locators, codegen, test locks, Speedboard, isolated retries, Clock API,
-ARIA snapshots, Test Agents, and the outlook. Reasons: UI mode, test locks and isolated retries
-have no equivalent in .NET (the audience uses xUnit); codegen and the Clock API appear in the
-C# slides; the others are a feature tour, and experience beats features here.
+ARIA snapshots, Test Agents, the outlook, the real backend (`real-backend`; its mock-or-real box
+is on `mock-or-real-choice` now), the three long .NET slides (`dotnet`,
+`dotnet-parity`, `dotnet-a11y`) and the MCP comparison (`mcp`). `dotnet-brief` replaces the
+.NET slides. `mcp-demo` and `cli-run-code` replace `mcp`.
 
 ### Playwright Test features that .NET does not have
 
-Slide 16 of the talk deck (`dotnet-parity`) lists the full split. The pool also has slides for
+The pool slide `dotnet-parity` lists the full split. `dotnet-brief` gives it in one line. The pool also has slides for
 test locks and isolated retries, and both carry a caveat line. Do not remove these lines: the
 audience is a .NET user group, and the claim would otherwise be wrong for them. The talk deck
 does not show these two features, thus the speaker says in one sentence what they are.
@@ -61,18 +70,20 @@ does not show these two features, thus the speaker says in one sentence what the
 - **Component testing** (1.62) — one line in the pool only.
 - **WebAuthn passkeys** (1.61) — parking lot. One line in the pool only.
 
-These three lines are on the `outlook` slide, which is in the pool and not in the talk deck.
+These three lines are on the `outlook` slide, which is in the pool and not in a talk deck.
 
 ## Documents
 
-Both documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do
+All documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They do
 **not** use Marp any more. The old Marp deck was deleted.
 
 ```
 docs/
-  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the talk deck — 21 slides, theme dark
-  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, do not edit
-  playwright-content-pool.yaml                               the content pool — 30 slides, theme dark
+  playwright-beyond-the-happy-path-it-tage-2026-12-09.yaml   the current talk deck — 20 slides, theme dark
+  playwright-beyond-the-happy-path-it-tage-2026-12-09.pdf    generated, do not edit
+  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the earlier talk deck — frozen, do not change
+  playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, frozen
+  playwright-content-pool.yaml                               the content pool — 34 slides, theme dark
   playwright-content-pool.pdf                                generated, do not edit
   avatar.jpg                                                 the photo on the about-me slide
   repo-qr.png                                                the QR code on the last slide
@@ -81,15 +92,19 @@ docs/
 A talk deck gets an event suffix: `<name>-<event>-<date>`. The content pool has no suffix,
 because there is one of it.
 
-The two YAML files are the only source of truth. Use `generate-docs.sh` in the repository
-root after each change — it makes all PDFs with one command:
+The YAML files are the only source of truth. Use `generate-docs.sh` in the repository
+root after each change:
 
 ```sh
-./generate-docs.sh              # both documents
-./generate-docs.sh slides       # only the talk deck
+./generate-docs.sh              # the current talk deck and the pool
+./generate-docs.sh slides       # only the current talk deck (IT-Tage)
 ./generate-docs.sh pool         # only the content pool
+./generate-docs.sh dnug         # only the Karlsruhe deck — not part of a run with no target
 ./generate-docs.sh -v           # show the full generator output
 ```
+
+A run with no target does not touch the Karlsruhe deck, because the generator rewrites the
+YAML file each time that it runs.
 
 The script finds its own directory, thus you can start it from any directory. It expects the
 generator beside this repository. Set `DOC_GENERATOR_DIR` to give a different path. It prints
@@ -112,10 +127,15 @@ in the generator repository. The script gives this hint when it sees the error.
   the title.
 - Block types: `heading`, `text`, `card-grid`, `flow`, `pricing`, `stats`, `table`, `steps`,
   `box`, `list`, `callout`, `cta`, `columns`, `code`, `mermaid`, `image`.
-- Each slide ends with a `callout` of variant `info`. Keep it to one or two sentences. Use
+- **Keep the text short.** One idea per sentence. The audience reads a slide in a few seconds.
+- A pool slide ends with a `callout` of variant `info`. Keep it to one or two sentences. Use
   title `Demo` when something runs on stage, and title `Walkthrough` when the speaker only
-  shows and explains code. One exception: a source footnote. The `axe` slide has a `text`
-  block with small grey HTML after the callout, and it prints at the bottom of the slide.
+  shows and explains code. A slide from a real project ends with title `Recommendation`.
+  One exception: a source footnote. The `axe` slide has a `text` block with small grey HTML
+  after the callout, and it prints at the bottom of the slide.
+- **The IT-Tage deck has no `Demo` callouts.** The speaker knows the demos. The commands
+  stay on the pool slides. The `Recommendation` callouts stay in the deck.
+- A `box` item prints its text as plain text, not HTML. A `--` in it becomes a dash.
 - **Give a number on a slide its source.** The `axe` slide marks the claim with `*` and puts
   the sources in that footnote, with a link for each one. The links are live in the PDF.
 - **Do not address the speaker in this callout.** Write a generic instruction that the
@@ -187,7 +207,8 @@ command (`dotnet run`, or `aspire run`). It is for a manual demo. No test needs 
 
 `playwright.config.ts` divides the tests into projects:
 
-- `mocked` — every spec except `deploy-integration.spec.ts`. Needs no container.
+- `mocked` — every spec except `deploy-integration.spec.ts`. Needs no container. This includes
+  `multiple-pages.spec.ts` (slide 13): two tabs in one context, and two users in two contexts.
 - `integration` — only `deploy-integration.spec.ts`. Needs Docker Compose.
 - `firefox`, `webkit`, `mobile` — the mocked specs on other engines.
 
@@ -205,7 +226,7 @@ while the dev server already runs on port 3000 — which it always does on stage
 cd src/deploy-or-die-frontend
 pnpm install
 pnpm run dev                 # the app on http://localhost:3000
-pnpm run test:mocked         # 17 tests, about 10 s, no containers (1 fails by design, see above)
+pnpm run test:mocked         # 19 tests, about 10 s, no containers (1 fails by design, see above)
 pnpm run test:a11y           # the accessibility demo
 pnpm run test:clock          # the Clock API demo
 pnpm run test:retries        # the isolated-retries demo (1 red on purpose)
@@ -227,6 +248,27 @@ The C# tests need their own browser download:
 ```sh
 pwsh bin/Debug/net10.0/playwright.ps1 install chromium
 ```
+
+### The playwright-cli snippet
+
+`src/deploy-or-die-frontend/agent-snippets/cooldown.js` is the code on the `cli-run-code`
+slide. It mocks the API, installs the clock, deploys, and runs the 30 second cooldown in one
+call. The app must run on port 3000:
+
+```sh
+npm install -g @playwright/cli@latest
+cd src/deploy-or-die-frontend
+playwright-cli open http://localhost:3000
+playwright-cli run-code --filename=agent-snippets/cooldown.js
+# {"during":"Next deploy in 30s","after":"Deploy Now 🚀"}
+```
+
+The snippet waits for the answer before it moves the clock, and it uses `runFor`, not
+`fastForward`: `fastForward` jumps over the interval ticks, and there is no retrying `expect`
+outside the test runner.
+
+The MCP demo slot (`mcp-demo`) uses the MCP server that comes with Playwright:
+`npx playwright mcp` (1.63.0, the same version as the tests).
 
 ### Container runtime
 

@@ -2,8 +2,10 @@
 #
 # Generates the talk documents with the vensas-doc-generator.
 #
-#   ./generate-docs.sh                  both documents
-#   ./generate-docs.sh slides           only the talk deck
+#   ./generate-docs.sh                  the current talk deck and the pool
+#   ./generate-docs.sh slides           only the current talk deck (IT-Tage)
+#   ./generate-docs.sh dnug             only the earlier talk deck (Karlsruhe),
+#                                       which a run with no target does not touch
 #   ./generate-docs.sh pool             only the content pool
 #   ./generate-docs.sh -v               show the full generator output
 #
@@ -11,7 +13,8 @@
 # variable DOC_GENERATOR_DIR to give a different path.
 #
 # The content pool holds every slide. A talk deck takes the slides that it
-# needs from the pool. Each slide carries its own Demo callout.
+# needs from the pool. A pool slide carries its Demo callout. A talk deck can
+# leave it out.
 
 set -euo pipefail
 
@@ -19,7 +22,8 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOCS_DIR="$REPO_DIR/docs"
 GENERATOR_DIR="${DOC_GENERATOR_DIR:-$REPO_DIR/../vensas-doc-generator}"
 
-DECK="playwright-beyond-the-happy-path-dnug-ka-2026-09-24"
+DECK="playwright-beyond-the-happy-path-it-tage-2026-12-09"
+DNUG_DECK="playwright-beyond-the-happy-path-dnug-ka-2026-09-24"
 POOL="playwright-content-pool"
 
 VERBOSE=0
@@ -29,13 +33,15 @@ for arg in "$@"; do
   case "$arg" in
     -v|--verbose) VERBOSE=1 ;;
     slides|deck)  TARGETS+=("$DECK") ;;
+    dnug)         TARGETS+=("$DNUG_DECK") ;;
     pool)         TARGETS+=("$POOL") ;;
-    -h|--help)    sed -n '2,14p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)    sed -n '2,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)            echo "Unknown option: $arg. Use -h for help." >&2; exit 2 ;;
   esac
 done
 
-# No target given: make all documents.
+# No target given: make the current talk deck and the pool. The earlier talk
+# deck is finished, thus it is made only on request.
 if [ ${#TARGETS[@]} -eq 0 ]; then
   TARGETS=("$DECK" "$POOL")
 fi
