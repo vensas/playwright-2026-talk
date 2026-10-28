@@ -4,21 +4,21 @@ Slides and demo project for the 2026 Playwright talk.
 
 **E2E tests, accessibility and MCP in practice.** Sven Hennessen · vensas GmbH
 
-## The slide decks
-
 ## Slides
 
 | Document                                              | Content                                                                                                        |
 |-------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | **The talk deck** for .NET User Group Karlsruhe on 24 September 2026.                                                                       |
+| `playwright-beyond-the-happy-path-it-tage-2026-12-09` | **The current talk deck** for IT-Tage 2026 in Frankfurt, 9 December 2026, 16:00–16:45.                         |
+| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | The talk deck for .NET User Group Karlsruhe on 24 September 2026.                                              |
 | `playwright-content-pool`                             | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
 
-The YAML files are the single source of truth. One command generates all PDFs:
+The YAML files are the single source of truth. One command generates the PDFs:
 
 ```sh
-./generate-docs.sh              # both documents
-./generate-docs.sh slides       # only the talk deck
+./generate-docs.sh              # the current talk deck and the pool
+./generate-docs.sh slides       # only the current talk deck
 ./generate-docs.sh pool         # only the content pool
+./generate-docs.sh dnug         # only the Karlsruhe deck
 ```
 
 ## Demo project: "Deploy or Die"
@@ -34,10 +34,21 @@ pnpm install
 npx playwright install chromium
 
 pnpm run dev                 # the app on http://localhost:3000
-pnpm run test:mocked         # 17 tests, about 10 s, no containers
+pnpm run test:mocked         # 19 tests, about 10 s, no containers
 pnpm run test:integration    # 4 tests against the real backend, about 4 min
 pnpm run test:ui             # UI mode
 pnpm run test:report         # the HTML report with Speedboard and Timeline
+```
+
+### playwright-cli
+
+The snippet on the `run-code` slide is in `agent-snippets/cooldown.js`. The app must run on
+port 3000.
+
+```sh
+npm install -g @playwright/cli@latest
+playwright-cli open http://localhost:3000
+playwright-cli run-code --filename=agent-snippets/cooldown.js
 ```
 
 ### Backend
@@ -94,7 +105,7 @@ With `false` the deploy form has three real WCAG defects:
 | `button-name`    | The history button has only an icon and no name            | 4.1.2 |
 | `color-contrast` | The hint text has a contrast of 1.9:1, and 4.5:1 is needed | 1.4.3 |
 
-Set the value to `true` and all 17 tests pass. This is the red to green step on stage.
+Set the value to `true` and all 19 tests pass. This is the red to green step on stage.
 
 ## Versions
 

@@ -1,0 +1,444 @@
+number: SL-20261209-01
+date: '2026-12-09'
+output_file: playwright-beyond-the-happy-path-it-tage-2026-12-09
+lang: en
+title: Playwright Beyond the Happy Path
+theme: dark
+type: slides
+slides:
+- id: cover
+  layout: cover
+  hero:
+    headline: 'Playwright '
+    headline_highlight: Beyond the Happy Path
+    label: IT-Tage 2026 · Frankfurt · 9 December 2026
+    subtext: E2E tests, accessibility and MCP in practice. Sven Hennessen · vensas GmbH
+- blocks:
+  - columns:
+    - - alt: Sven Hennessen
+        src: avatar.jpg
+        type: image
+      - text: <strong style="color:var(--text-primary);font-size:19px;">Sven Hennessen</strong><br><span style="color:var(--text-accent);">vensas GmbH</span>
+        type: text
+    - - text: <div style="flex:1;height:100%;box-sizing:border-box;margin:0;padding:20px 24px;background:rgba(106,190,167,0.10);border:1px solid rgba(106,190,167,0.35);border-radius:10px;display:flex;flex-direction:column;justify-content:center;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;"><strong
+          style="color:var(--text-accent);">Almost 20 years</strong> of software development and architecture</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span
+          style="font-size:17px;line-height:1.6;"><strong style="color:var(--text-accent);">Co-founder and co-managing director</strong> of vensas GmbH, founded in 2023</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span
+          style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Consulting and development of <strong
+          style="color:var(--text-accent);">business software</strong> for medium-sized companies</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span
+          style="font-size:17px;line-height:1.6;">Away from the computer — <strong style="color:var(--text-accent);">hiking</strong>, <strong style="color:var(--text-accent);">cycling</strong> or the <strong
+          style="color:var(--text-accent);">racing simulator</strong></span></div> </div>
+        type: text
+    type: columns
+    widths:
+    - 2
+    - 8.8
+  id: about-me
+  layout: content
+  title: About me
+- blocks:
+  - text: A deployment game. Each deployment has a 50% success rate. After a deployment you must wait 30 seconds.
+    type: text
+  - rows:
+    - key: Frontend
+      value: React 19, PrimeReact, Rspack
+    - key: Backend
+      value: ASP.NET Core minimal API on .NET 10, PostgreSQL 16
+    - key: Tests
+      value: Playwright 1.63 in TypeScript, 1.62 in C#
+    type: table
+  id: demo-app
+  layout: content
+  title: 'The demo app: Deploy or Die'
+- blocks:
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - items:
+        - Watch mode — the test runs again after each change
+        - Time travel — see the DOM at each step
+        - Pick locator — click an element, get the locator
+        - Network, console and source in one window
+        title: What you get
+        type: list
+    - - type: image
+        src: img/ui-mode.jpg
+        alt: 'Meme: a grandmother looks closely at a laptop. Text: What you see is what you test.'
+  id: ui-mode
+  layout: content
+  title: UI mode
+- blocks:
+  - label: From a real project
+    title: Keep the tests in their own folder
+    type: heading
+  - caption: We made this change. Then we made it again in the other direction.
+    code: '// We did this. Playwright then read all of src/ at each start.
+
+      testDir: ''./src'',
+
+
+      // Keep the default. The tests have their own folder.
+
+      testDir: ''./tests'',
+
+      '
+    filename: playwright.config.ts
+    language: typescript
+    type: code
+  - items:
+    - label: CI
+      text: The test job became slow, then it stopped with a timeout.
+    - label: UI mode
+      text: The start took some minutes, but not each time.
+    title: What it cost us
+    type: box
+  - text: Keep the tests out of the source folder.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: test-folder
+  layout: content
+- blocks:
+  - caption: 'New in 1.63: the trace also records the ARIA tree and the screen.'
+    code: "use: {\n  trace: {\n    mode: 'on',\n    snapshots: { dom: true, aria: true, screen: true },\n  },\n  screenshot: 'only-on-failure',\n  video: 'retain-on-failure',\n}\n"
+    filename: playwright.config.ts
+    language: typescript
+    type: code
+  - items:
+    - DOM, ARIA tree and screen for each step
+    - All network requests and answers
+    - Console output and source code
+    title: A trace contains
+    type: list
+  id: traces
+  layout: content
+  title: Traces
+- blocks:
+  - label: From a real project
+    title: Make the trace available in CI
+    type: heading
+  - text: A test can fail in CI and pass on your machine. Without the trace you can only guess.
+    type: text
+  - caption: The report goes up after each run. The trace and the video go up only after a failure.
+    code: "- name: Upload the report\n  uses: actions/upload-artifact@v7\n  if: always()\n  with:\n    name: playwright-report\n    path: playwright-report/\n    retention-days: 7\n\n- name: Upload traces\
+      \ and videos\n  uses: actions/upload-artifact@v7\n  if: failure()\n  with:\n    name: playwright-traces\n    path: test-results/\n    retention-days: 7\n"
+    filename: .github/workflows/e2e.yml
+    language: yaml
+    type: code
+  - text: Upload the report after each run, and the traces after each failure.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: ci-artifacts
+  layout: content
+- blocks:
+  - label: From a real project
+    title: Keep the test pyramid
+    type: heading
+  - text: 'UI mode and agents make an E2E test look cheap. It is not: it costs more to write and to maintain than a unit test.'
+    type: text
+  - text: Most tests were Playwright tests. React Testing Library was sufficient for 80% of them. The suite grew, and the CI runners became unreliable.
+    title: From a team that I mentored
+    type: callout
+    variant: warning
+  - items:
+    - label: Many
+      text: Unit and component tests. They are fast and cheap.
+    - label: Few
+      text: E2E tests. Use them for the important paths.
+    note: An unreliable E2E test is worse than no E2E test.
+    style: connector
+    title: What I take from this
+    type: box
+  - text: Find the E2E tests that a unit or a component test can replace.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: pyramid
+  layout: content
+- blocks:
+  - caption: You control the answer. Thus you can test the error path, which occurs in only 50% of the runs.
+    code: "// Set the route before you go to the page.\nawait page.route('**/api/deploy', async (route) => {\n  await route.fulfill({\n    status: 200,\n    contentType: 'application/json',\n    body: JSON.stringify({\n\
+      \      success: false,\n      message: '\U0001F4A5 BOOM! The database just went on vacation.',\n      deployedBy: 'Unlucky Developer',\n    }),\n  });\n});\n\nawait page.goto('/');\n"
+    filename: tests/deploy-failure.spec.ts
+    language: typescript
+    type: code
+  id: mock
+  layout: content
+  title: Mock the API
+- blocks:
+  - label: From a real project
+    title: Mock or real — how I choose
+    type: heading
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - text: Both are correct, and both add value. The complexity of the project decides.
+        type: text
+      - items:
+        - label: Services
+          text: How many services does the scenario touch?
+        - label: Contract
+          text: How complex is the API contract?
+        - label: Test
+          text: How complex is the test itself?
+        title: Three questions before I decide
+        type: box
+      - items:
+        - label: Mock
+          text: Fast and stable. Blind to the backend.
+        - label: Real
+          text: Finds integration faults. Slow.
+        style: connector
+        title: Mock or real
+        type: box
+    - - type: image
+        src: img/mock-or-real.jpg
+        alt: 'Meme: a corgi sits between two corgi plush toys. Text: Are you mocking me?'
+  - text: The demo app has one service and a small contract. Thus it has 19 mocked tests and 4 integration tests.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: mock-or-real-choice
+  layout: content
+- blocks:
+  - label: From a real project
+    title: Start the dependencies with Compose
+    type: heading
+  - text: First I started each container from the test code. It was flaky, on my machine and in CI.
+    type: text
+  - items:
+    - The start order and the readiness check
+    - The network between the containers and the port mapping
+    - Containers that stayed after the run
+    title: What broke
+    type: list
+  - caption: depends_on with a healthcheck replaces the wait code in the test.
+    code: "postgres:\n  healthcheck:\n    test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\nbackend:\n  depends_on:\n    postgres:\n      condition: service_healthy\n"
+    filename: tests/docker-compose.integration.yml
+    language: yaml
+    type: code
+  - text: Start the containers one time in a global setup, not for each test.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: compose-setup
+  layout: content
+- blocks:
+  - label: From a real project
+    title: The E2E tests are not only a frontend job
+    type: heading
+  - text: Teams put the E2E tests in the frontend pipeline only. But a test against a real backend also tests the backend.
+    type: text
+  - text: The team released an API that was not compatible. Nobody ran the E2E tests before the release.
+    title: What happened to a team that I mentored
+    type: callout
+    variant: warning
+  - items:
+    - Run the tests after each frontend build
+    - Run them after each backend build too
+    - Or run them nightly — your test plan decides
+    title: What I recommend
+    type: list
+  - text: Find out where your E2E tests run today.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: when-to-run
+  layout: content
+- id: multiple-pages
+  layout: content
+  title: More than one page at a time
+  blocks:
+  - type: code
+    language: typescript
+    filename: tests/multiple-pages.spec.ts
+    caption: Each context has its own cookies and storage. Promise.all lets both users click at the same time.
+    code: "test('two users deploy at the same time', async ({ browser }) => {\n  const alice = await browser.newContext();\n  const bob = await browser.newContext();\n  await Promise.all([mockDeploy(alice),\
+      \ mockDeploy(bob)]);\n\n  const [alicePage, bobPage] = await Promise.all([alice.newPage(), bob.newPage()]);\n  await Promise.all([alicePage.goto('/'), bobPage.goto('/')]);\n\n  await Promise.all([deploy(alicePage,\
+      \ 'Alice'), deploy(bobPage, 'Bob')]);\n\n  await expect(alicePage.getByText(/Deployed by: Alice/i)).toBeVisible();\n  await expect(bobPage.getByText(/Deployed by: Bob/i)).toBeVisible();\n});\n"
+  - type: box
+    title: Pages and contexts
+    items:
+    - label: Page
+      text: One tab. context.newPage()
+    - label: Context
+      text: One user. browser.newContext() — the routes apply to all its pages
+    - label: New tab
+      text: context.waitForEvent('page') — start to wait before the click
+- blocks:
+  - caption: The European Accessibility Act applies since June 2025. Thus this check belongs in the pipeline.
+    code: "const results = await new AxeBuilder({ page })\n  .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])\n  .analyze();\n\nawait testInfo.attach('axe-results.json', {\n  body: JSON.stringify(results.violations,\
+      \ null, 2),\n  contentType: 'application/json',\n});\n\nexpect(results.violations.map((v) => ({ rule: v.id, impact: v.impact }))).toEqual([]);\n"
+    filename: tests/accessibility.spec.ts
+    language: typescript
+    type: code
+  - text: axe-core finds 25% to 57% of the defects*. <span style="display:block;margin-top:8px;"><strong style="color:var(--text-accent);">Recommendation:</strong> test the rest by hand, with the keyboard
+      and a screen reader.</span>
+    title: Expectation management
+    type: callout
+    variant: warning
+  - text: <span style="font-size:13px;color:var(--text-secondary);">* <a href="https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/" style="color:var(--text-trust);">Deque,
+      57%</a> · <a href="http://adrianroselli.com/2023/01/comparing-manual-and-free-automated-wcag-reviews.html" style="color:var(--text-trust);">UK Government Digital Service tool audit, 30–40%</a> · <a
+      href="https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/" style="color:var(--text-trust);">Karl Groves, 25–33%</a></span>
+    type: text
+  id: axe
+  layout: content
+  title: Accessibility as a gate
+- id: dotnet-brief
+  layout: content
+  title: The same test in C#
+  blocks:
+  - caption: The same API, with .NET names. Your test runner is xUnit, NUnit or MSTest.
+    code: "public class DeployTests : PageTest\n{\n    [Fact]\n    public async Task Cooldown_BlocksTheSecondDeployment()\n    {\n        await Page.Clock.InstallAsync();\n        await Page.GotoAsync(\"\
+      http://localhost:3000\");\n\n        var deploy = Page.GetByRole(AriaRole.Button,\n            new() { NameRegex = new Regex(\"Deploy Now\") });\n        await deploy.ClickAsync();\n\n        // Move\
+      \ the time forward instead of a wait of 30 seconds.\n        await Page.Clock.FastForwardAsync(\"00:30\");\n        await Expect(deploy).ToBeEnabledAsync();\n    }\n}\n"
+    filename: DeployTests.cs
+    language: csharp
+    type: code
+  - type: box
+    style: connector
+    items:
+    - label: Same
+      text: Locators, Clock API, routes, traces, codegen, axe-core
+    - label: Node only
+      text: UI mode, test locks, isolated retries, Test Agents
+- blocks:
+  - label: From a real project
+    title: Where you must hold the reins
+    type: heading
+  - text: 'Typical defects: a hard coded wait, a CSS selector instead of a role, and an assertion that is always true.'
+    title: A generated test can look correct and be worthless
+    type: callout
+    variant: warning
+  - code: '// Generated — and wrong.
+
+      await page.waitForTimeout(3000);
+
+      await page.click(''.p-button.p-component.deploy-button'');
+
+      await expect(page.locator(''body'')).toBeVisible();
+
+      '
+    language: typescript
+    type: code
+  - items:
+    - label: Agent
+      text: Explores and writes the first draft.
+    - label: Human
+      text: Reviews, then puts it in the pipeline.
+    style: connector
+    title: The rule that works for us
+    type: box
+  - text: Let an agent write the first draft, not <code style="font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);">playwright codegen</code>.
+      The agent reads the accessibility tree and uses roles. Review each draft.
+    title: Recommendation
+    type: callout
+    variant: info
+  id: caveat
+  layout: content
+- id: mcp-demo
+  layout: content
+  title: 'Demo: an agent tests the app over MCP'
+  blocks:
+  - type: text
+    text: The MCP server gives the agent the accessibility tree, not pixels. It is part of Playwright since 1.62.
+  - type: code
+    language: json
+    filename: .mcp.json
+    code: "{\n  \"mcpServers\": {\n    \"playwright\": { \"command\": \"npx\", \"args\": [\"playwright\", \"mcp\"] }\n  }\n}\n"
+  - type: flow
+    phases:
+    - label: Step 1
+      color: trust
+      title: Prompt
+      text: Test the error path of the deploy form.
+    - label: Step 2
+      color: accent
+      title: Snapshot
+      text: browser_snapshot gives the ARIA tree, with a ref for each element.
+    - label: Step 3
+      color: green
+      title: Act
+      text: browser_type and browser_click use the refs.
+    - label: Step 4
+      color: trust
+      title: Result
+      text: A spec with role based locators. You review it.
+- id: cli-run-code
+  layout: content
+  title: 'playwright-cli: the agent runs code'
+  blocks:
+  - type: text
+    text: One snippet instead of ten tool calls. The snippet has the full Playwright API.
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - type: code
+        language: javascript
+        filename: agent-snippets/cooldown.js
+        caption: 'Result: {"during":"Next deploy in 30s","after":"Deploy Now 🚀"}'
+        code: "async page => {\n  await page.route('**/api/deploy', route =>\n    route.fulfill({ json: { success: false, message: 'BOOM' } }));\n  await page.clock.install();\n  await page.reload();\n\
+          \  await page.getByLabel(/Who dares to deploy/i).fill('Agent');\n  await page.getByRole('button', { name: /Deploy Now/i }).click();\n  await page.getByText('BOOM').waitFor();\n  const during =\
+          \ await page.locator('.deploy-button').textContent();\n  await page.clock.runFor('00:30');\n  const after = await page.locator('.deploy-button').textContent();\n  return { during, after };\n}\n"
+    - - type: code
+        language: bash
+        code: "playwright-cli open http://localhost:3000\nplaywright-cli run-code \\\n  --filename=agent-snippets/cooldown.js\n"
+      - type: box
+        items:
+        - label: Tokens
+          text: Commands only, no tool schema in the context
+        - label: Reach
+          text: Routes, clock and more pages in one call
+        - label: Repeat
+          text: The agent keeps the file and runs it again
+        - label: Attach
+          text: The agent uses your open Chrome, with your login
+- id: lessons
+  layout: content
+  title: TL;DR
+  blocks:
+  - steps:
+    - title: Write few E2E tests. The test pyramid still holds.
+      text: An unreliable E2E test is worse than no E2E test.
+    - title: An E2E test with a real backend is not a frontend job.
+      text: Run it after each backend build too, or nightly.
+    - title: Make accessibility a gate on day one.
+      text: axe-core is a few lines in the test. The European Accessibility Act applies since June 2025.
+    - title: 'AI: let agents drive the browser with the MCP server and playwright-cli.'
+      text: Use them to explore and to automate. A human reviews each test that they write.
+    type: steps
+- blocks:
+  - columns:
+    - - text: <div class="card" style="background:var(--slide-bg-card);border:2px solid var(--highlight);"><div class="label" style="margin-bottom:12px;">Thank you</div><h3 style="margin-bottom:12px;">Questions?</h3><p
+          style="font-size:15px;">Demo project and slides available at <a href="https://github.com/vensas/playwright-2026-talk" style="color:inherit;text-decoration:underline;">https://github.com/vensas/playwright-2026-talk</a></p><div
+          style="margin-top:16px;display:flex;flex-direction:column;gap:10px;"><a href="https://www.linkedin.com/in/svenhennessen/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-accent);"><span
+          style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="flex:0 0 auto;"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85
+          0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22
+          0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></span><span style="font-size:15px;font-weight:600;">https://www.linkedin.com/in/svenhennessen/</span></a><a
+          href="mailto:kontakt@vensas.de" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-accent);"><span style="display:flex;align-items:center;"><svg viewBox="0 0
+          24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="flex:0 0 auto;"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm2 .5V18h16V6.5l-8 5-8-5zM4.6
+          6 12 10.6 19.4 6H4.6z"/></svg></span><span style="font-size:15px;font-weight:600;">kontakt@vensas.de</span></a><a href="https://vensas.de" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-trust);"><span
+          style="display:flex;align-items:center;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="flex:0 0 auto;"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0
+          0 0-20zm6.93 6h-2.95a15.6 15.6 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14A7.96 7.96 0 0 1 4 12c0-.69.1-1.36.26-2h3.38a16.6
+          16.6 0 0 0 0 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.99 7.99 0 0 1 5.07 16zm2.95-8H5.07a7.99 7.99 0 0 1 4.33-3.56A15.6 15.6 0 0 0 8.02 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43
+          1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66a14.9 14.9 0 0 1 0-4h4.68a14.9 14.9 0 0 1 0 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a7.99 7.99 0 0 1-4.33 3.56zM16.36 14a16.6 16.6 0 0 0 0-4h3.38a8 8
+          0 0 1 0 4h-3.38z"/></svg></span><span style="font-size:15px;font-weight:600;">vensas.de</span></a></div></div>
+        type: text
+    - - alt: QR code for the repository
+        caption: Slides & Demo
+        src: repo-qr.png
+        type: image
+    type: columns
+    widths:
+    - 8
+    - 1.6
+  id: questions
+  layout: content
+  title: That's all folks!
