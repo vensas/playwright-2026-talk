@@ -16,3 +16,6 @@ playwright/.cache/
 
 # playwright-cli output (snapshots and console logs)
 .playwright-cli/
+
+# impeccable design critique snapshots
+.impeccable/
