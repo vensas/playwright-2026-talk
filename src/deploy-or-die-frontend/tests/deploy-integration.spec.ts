@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 /**
  * Integration tests against the real ASP.NET Core backend and a real
- * PostgreSQL database. Docker Compose starts both, see `testcontainers.ts`.
+ * PostgreSQL database. Docker Compose starts both, see `playwright/testcontainers.ts`.
  *
  * All tests here write to the same database. `lock` (new in 1.63) makes sure
  * that two tests which hold the same lock name never run at the same time,
