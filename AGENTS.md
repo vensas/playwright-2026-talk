@@ -85,6 +85,7 @@ docs/
   playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, frozen
   playwright-content-pool.yaml                               the content pool — 34 slides, theme dark
   playwright-content-pool.pdf                                generated, do not edit
+  img/                                                       the screenshots and the meme on the slides
   avatar.jpg                                                 the photo on the about-me slide
   repo-qr.png                                                the QR code on the last slide
 ```
@@ -136,6 +137,24 @@ in the generator repository. The script gives this hint when it sees the error.
 - **The IT-Tage deck has no `Demo` callouts.** The speaker knows the demos. The commands
   stay on the pool slides. The `Recommendation` callouts stay in the deck.
 - A `box` item prints its text as plain text, not HTML. A `--` in it becomes a dash.
+- Do not use `style: connector` on a `box`. It pushes the value to the right edge, and the
+  value wraps. A plain `box` keeps the label and the text together.
+- **Images.** Put an image in a `columns` block beside the content, and give it an `alt`.
+  Keep the first `heading` block and the last `callout` outside the columns. The template
+  limits an image to 400 px height. Use `widths: [6, 4]` for a narrow image (the app) and
+  `[4, 6]` for a wide one (UI mode, the trace viewer). Crop a screenshot to the part that
+  matters, because a small UI is not readable at the back of the room.
+- **The screenshots in `docs/img/` are real.** Playwright made them against the demo app: the
+  app (`app-cooldown.png`, `app-boom.png`, with `page.route`), UI mode (`ui-mode.png`, from
+  `--ui-port`), the trace viewer (`trace-viewer.png`, from `show-trace --port`) and the
+  failed axe test in the HTML report (`axe-error.png`, from `show-report --port`, with
+  `ACCESSIBLE_MODE = false`). Make them again after a visual change to the app.
+  Note: UI mode deletes `test-results/` when it starts — copy a trace away first.
+- The pyramid on the `pyramid` slide is HTML in a `text` block (CSS `clip-path`), not an image.
+- The architecture diagram on the `demo-app` slide is HTML in a `text` block too: four tiers
+  (tests, frontend, backend, database) with arrows. It replaces the stack table.
+- The meme on `mock-or-real-choice` uses `widths: [5.2, 4.8]`, thus its height matches the two
+  boxes on the left. The intro text sits above the columns.
 - **Give a number on a slide its source.** The `axe` slide marks the claim with `*` and puts
   the sources in that footnote, with a link for each one. The links are live in the PDF.
 - **Do not address the speaker in this callout.** Write a generic instruction that the
@@ -212,7 +231,10 @@ command (`dotnet run`, or `aspire run`). It is for a manual demo. No test needs 
 - `integration` — only `deploy-integration.spec.ts`. Needs Docker Compose.
 - `firefox`, `webkit`, `mobile` — the mocked specs on other engines.
 
-`SKIP_CONTAINERS=1` stops the container start in `tests/testcontainers.ts`. The `test:mocked`,
+The `tests/` folder holds only the specs. The test infrastructure is in `playwright/`: the
+global setup and teardown, `testcontainers.ts` and `docker-compose.integration.yml`.
+
+`SKIP_CONTAINERS=1` stops the container start in `playwright/testcontainers.ts`. The `test:mocked`,
 `test:a11y`, `test:clock` and `test:retries` scripts set it, because the container start needs about 30 seconds.
 
 `test:retries` passes `--retries=2` on the command line. Do **not** use `CI=1` for this: the
@@ -272,7 +294,7 @@ The MCP demo slot (`mcp-demo`) uses the MCP server that comes with Playwright:
 
 ### Container runtime
 
-The project was made and tested on macOS with Podman. `tests/testcontainers.ts` switches to
+The project was made and tested on macOS with Podman. `playwright/testcontainers.ts` switches to
 `podman compose` when Testcontainers fails, and it disables Ryuk for Podman.
 
 ### Known issue: Firefox fails from an editor's integrated terminal (macOS)

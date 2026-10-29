@@ -26,8 +26,8 @@ slides:
           style="font-size:17px;line-height:1.6;"><strong style="color:var(--text-accent);">Co-founder and co-managing director</strong> of vensas GmbH, founded in 2023</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span
           style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span style="font-size:17px;line-height:1.6;">Consulting and development of <strong
           style="color:var(--text-accent);">business software</strong> for medium-sized companies</span></div> <div style="display:flex;gap:12px;align-items:flex-start;"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-trust);flex-shrink:0;margin-top:9px;"></span><span
-          style="font-size:17px;line-height:1.6;">Away from the computer — <strong style="color:var(--text-accent);">hiking</strong>, <strong style="color:var(--text-accent);">cycling</strong> or the <strong
-          style="color:var(--text-accent);">racing simulator</strong></span></div> </div>
+          style="font-size:17px;line-height:1.6;">Away from the computer — <strong style="color:var(--text-accent);">hiking</strong>, <strong style="color:var(--text-accent);">cycling</strong> and <strong
+          style="color:var(--text-accent);">snowboarding</strong></span></div> </div>
         type: text
     type: columns
     widths:
@@ -37,24 +37,34 @@ slides:
   layout: content
   title: About me
 - blocks:
-  - text: A deployment game. Each deployment has a 50% success rate. After a deployment you must wait 30 seconds.
-    type: text
-  - rows:
-    - key: Frontend
-      value: React 19, PrimeReact, Rspack
-    - key: Backend
-      value: ASP.NET Core minimal API on .NET 10, PostgreSQL 16
-    - key: Tests
-      value: Playwright 1.63 in TypeScript, 1.62 in C#
-    type: table
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - text: A deployment game. Each deployment has a 50% success rate. After a deployment you must wait 30 seconds.
+        type: text
+      - type: text
+        text: <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;"><div style="padding:10px 16px;border-radius:10px;border:1px solid var(--slide-border);background:rgba(255,255,255,0.04);display:flex;gap:14px;align-items:baseline;border-color:rgba(106,190,167,0.6);background:rgba(106,190,167,0.10);"><span
+          style="width:86px;flex-shrink:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-accent);">Tests</span><span style="font-size:16px;">Playwright 1.63
+          in TypeScript, 1.62 in C#</span></div><div style="text-align:center;color:var(--text-secondary);font-size:15px;line-height:1;">↓ <span style="font-size:12px;">drives the browser</span></div><div
+          style="padding:10px 16px;border-radius:10px;border:1px solid var(--slide-border);background:rgba(255,255,255,0.04);display:flex;gap:14px;align-items:baseline;"><span style="width:86px;flex-shrink:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-accent);">Frontend</span><span
+          style="font-size:16px;">React 19, PrimeReact, Rspack</span></div><div style="text-align:center;color:var(--text-secondary);font-size:15px;line-height:1;">↓ <span style="font-size:12px;">POST /api/deploy</span></div><div
+          style="padding:10px 16px;border-radius:10px;border:1px solid var(--slide-border);background:rgba(255,255,255,0.04);display:flex;gap:14px;align-items:baseline;"><span style="width:86px;flex-shrink:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-accent);">Backend</span><span
+          style="font-size:16px;">ASP.NET Core minimal API, .NET 10</span></div><div style="text-align:center;color:var(--text-secondary);font-size:15px;line-height:1;">↓ <span style="font-size:12px;">SQL</span></div><div
+          style="padding:10px 16px;border-radius:10px;border:1px solid var(--slide-border);background:rgba(255,255,255,0.04);display:flex;gap:14px;align-items:baseline;"><span style="width:86px;flex-shrink:0;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-accent);">Database</span><span
+          style="font-size:16px;">PostgreSQL 16</span></div></div>
+    - - type: image
+        src: img/app-cooldown.png
+        alt: 'Deploy or Die after a successful deployment. The button shows: Next deploy in 27s.'
   id: demo-app
   layout: content
   title: 'The demo app: Deploy or Die'
 - blocks:
   - type: columns
     widths:
-    - 6
     - 4
+    - 6
     columns:
     - - items:
         - Watch mode — the test runs again after each change
@@ -64,8 +74,8 @@ slides:
         title: What you get
         type: list
     - - type: image
-        src: img/ui-mode.jpg
-        alt: 'Meme: a grandmother looks closely at a laptop. Text: What you see is what you test.'
+        src: img/ui-mode.png
+        alt: Playwright UI mode after a run of the cooldown tests. One step is selected, with its DOM snapshot and source line.
   id: ui-mode
   layout: content
   title: UI mode
@@ -101,17 +111,19 @@ slides:
   id: test-folder
   layout: content
 - blocks:
-  - caption: 'New in 1.63: the trace also records the ARIA tree and the screen.'
-    code: "use: {\n  trace: {\n    mode: 'on',\n    snapshots: { dom: true, aria: true, screen: true },\n  },\n  screenshot: 'only-on-failure',\n  video: 'retain-on-failure',\n}\n"
-    filename: playwright.config.ts
-    language: typescript
-    type: code
-  - items:
-    - DOM, ARIA tree and screen for each step
-    - All network requests and answers
-    - Console output and source code
-    title: A trace contains
-    type: list
+  - type: columns
+    widths:
+    - 4
+    - 6
+    columns:
+    - - caption: 'New in 1.63: the trace also records the ARIA tree and the screen.'
+        code: "use: {\n  trace: {\n    mode: 'on',\n    snapshots: { dom: true, aria: true, screen: true },\n  },\n  screenshot: 'only-on-failure',\n  video: 'retain-on-failure',\n}\n"
+        filename: playwright.config.ts
+        language: typescript
+        type: code
+    - - type: image
+        src: img/trace-viewer.png
+        alt: Playwright trace viewer. The action list, the timeline and the DOM snapshot of the step that finds the BOOM message.
   id: traces
   layout: content
   title: Traces
@@ -121,9 +133,8 @@ slides:
     type: heading
   - text: A test can fail in CI and pass on your machine. Without the trace you can only guess.
     type: text
-  - caption: The report goes up after each run. The trace and the video go up only after a failure.
-    code: "- name: Upload the report\n  uses: actions/upload-artifact@v7\n  if: always()\n  with:\n    name: playwright-report\n    path: playwright-report/\n    retention-days: 7\n\n- name: Upload traces\
-      \ and videos\n  uses: actions/upload-artifact@v7\n  if: failure()\n  with:\n    name: playwright-traces\n    path: test-results/\n    retention-days: 7\n"
+  - code: "- uses: actions/upload-artifact@v7\n  if: always()\n  with: { name: playwright-report, path: playwright-report/ }\n\n- uses: actions/upload-artifact@v7\n  if: failure()\n  with: { name: playwright-traces,\
+      \ path: test-results/ }\n"
     filename: .github/workflows/e2e.yml
     language: yaml
     type: code
@@ -137,21 +148,22 @@ slides:
   - label: From a real project
     title: Keep the test pyramid
     type: heading
-  - text: 'UI mode and agents make an E2E test look cheap. It is not: it costs more to write and to maintain than a unit test.'
-    type: text
-  - text: Most tests were Playwright tests. React Testing Library was sufficient for 80% of them. The suite grew, and the CI runners became unreliable.
-    title: From a team that I mentored
-    type: callout
-    variant: warning
-  - items:
-    - label: Many
-      text: Unit and component tests. They are fast and cheap.
-    - label: Few
-      text: E2E tests. Use them for the important paths.
-    note: An unreliable E2E test is worse than no E2E test.
-    style: connector
-    title: What I take from this
-    type: box
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - text: 'UI mode and agents make an E2E test look cheap. It is not: it costs more to write and to maintain than a unit test.'
+        type: text
+      - text: Most tests were Playwright tests. React Testing Library was sufficient for 80% of them. The suite grew, and the CI runners became unreliable.
+        title: From a team that I mentored
+        type: callout
+        variant: warning
+    - - type: text
+        text: <div style="display:flex;flex-direction:column;gap:6px;padding:8px 0;"><div style="margin:0 auto;padding:16px 0;text-align:center;font-weight:700;font-size:16px;width:38%;background:var(--color-accent);color:#1a1d24;clip-path:polygon(50%
+          0,100% 100%,0 100%);padding-top:34px;">E2E</div><div style="margin:0 auto;padding:16px 0;text-align:center;font-weight:700;font-size:16px;width:69%;background:rgba(106,190,167,0.55);color:var(--text-primary);clip-path:polygon(22.5%
+          0,77.5% 0,100% 100%,0 100%);">Component</div><div style="margin:0 auto;padding:16px 0;text-align:center;font-weight:700;font-size:16px;width:100%;background:rgba(106,190,167,0.25);color:var(--text-primary);clip-path:polygon(15.5%
+          0,84.5% 0,100% 100%,0 100%);">Unit</div><div style="text-align:center;font-size:14px;color:var(--text-secondary);margin-top:8px;">An unreliable E2E test is worse than no E2E test.</div></div>
   - text: Find the E2E tests that a unit or a component test can replace.
     title: Recommendation
     type: callout
@@ -159,12 +171,22 @@ slides:
   id: pyramid
   layout: content
 - blocks:
-  - caption: You control the answer. Thus you can test the error path, which occurs in only 50% of the runs.
-    code: "// Set the route before you go to the page.\nawait page.route('**/api/deploy', async (route) => {\n  await route.fulfill({\n    status: 200,\n    contentType: 'application/json',\n    body: JSON.stringify({\n\
-      \      success: false,\n      message: '\U0001F4A5 BOOM! The database just went on vacation.',\n      deployedBy: 'Unlucky Developer',\n    }),\n  });\n});\n\nawait page.goto('/');\n"
-    filename: tests/deploy-failure.spec.ts
-    language: typescript
-    type: code
+  - type: columns
+    widths:
+    - 6
+    - 4
+    columns:
+    - - code: "// Set the route before you go to the page.\nawait page.route('**/api/deploy', async (route) => {\n  await route.fulfill({\n    status: 200,\n    contentType: 'application/json',\n    body:\
+          \ JSON.stringify({\n      success: false,\n      message: '\U0001F4A5 BOOM! The database just went on vacation.',\n      deployedBy: 'Unlucky Developer',\n    }),\n  });\n});\n\nawait page.goto('/');\n"
+        filename: tests/deploy-failure.spec.ts
+        language: typescript
+        type: code
+      - type: callout
+        text: You control the answer. Thus you can test the error path, which occurs in only 50% of the runs.
+        variant: info
+    - - type: image
+        src: img/app-boom.png
+        alt: 'The app shows the mocked answer: BOOM! The database just went on vacation.'
   id: mock
   layout: content
   title: Mock the API
@@ -172,14 +194,14 @@ slides:
   - label: From a real project
     title: Mock or real — how I choose
     type: heading
+  - text: Both are correct, and both add value. The complexity of the project decides.
+    type: text
   - type: columns
     widths:
-    - 6
-    - 4
+    - 5.2
+    - 4.8
     columns:
-    - - text: Both are correct, and both add value. The complexity of the project decides.
-        type: text
-      - items:
+    - - items:
         - label: Services
           text: How many services does the scenario touch?
         - label: Contract
@@ -193,7 +215,6 @@ slides:
           text: Fast and stable. Blind to the backend.
         - label: Real
           text: Finds integration faults. Slow.
-        style: connector
         title: Mock or real
         type: box
     - - type: image
@@ -211,17 +232,21 @@ slides:
     type: heading
   - text: First I started each container from the test code. It was flaky, on my machine and in CI.
     type: text
-  - items:
-    - The start order and the readiness check
-    - The network between the containers and the port mapping
-    - Containers that stayed after the run
-    title: What broke
-    type: list
-  - caption: depends_on with a healthcheck replaces the wait code in the test.
-    code: "postgres:\n  healthcheck:\n    test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\nbackend:\n  depends_on:\n    postgres:\n      condition: service_healthy\n"
-    filename: tests/docker-compose.integration.yml
-    language: yaml
-    type: code
+  - type: columns
+    widths:
+    - 5
+    - 5
+    columns:
+    - - items:
+        - The start order and the readiness check
+        - The network between the containers and the port mapping
+        - Containers that stayed after the run
+        title: What broke
+        type: list
+    - - code: "postgres:\n  healthcheck:\n    test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\nbackend:\n  depends_on:\n    postgres:\n      condition: service_healthy\n"
+        filename: playwright/docker-compose.integration.yml
+        language: yaml
+        type: code
   - text: Start the containers one time in a global setup, not for each test.
     title: Recommendation
     type: callout
@@ -257,31 +282,30 @@ slides:
   - type: code
     language: typescript
     filename: tests/multiple-pages.spec.ts
-    caption: Each context has its own cookies and storage. Promise.all lets both users click at the same time.
     code: "test('two users deploy at the same time', async ({ browser }) => {\n  const alice = await browser.newContext();\n  const bob = await browser.newContext();\n  await Promise.all([mockDeploy(alice),\
       \ mockDeploy(bob)]);\n\n  const [alicePage, bobPage] = await Promise.all([alice.newPage(), bob.newPage()]);\n  await Promise.all([alicePage.goto('/'), bobPage.goto('/')]);\n\n  await Promise.all([deploy(alicePage,\
       \ 'Alice'), deploy(bobPage, 'Bob')]);\n\n  await expect(alicePage.getByText(/Deployed by: Alice/i)).toBeVisible();\n  await expect(bobPage.getByText(/Deployed by: Bob/i)).toBeVisible();\n});\n"
-  - type: box
-    title: Pages and contexts
-    items:
-    - label: Page
-      text: One tab. context.newPage()
-    - label: Context
-      text: One user. browser.newContext() — the routes apply to all its pages
-    - label: New tab
-      text: context.waitForEvent('page') — start to wait before the click
+  - type: text
+    text: A page is a tab. A context is a user. Each context has its own cookies and storage. For a tab that a click opens, use <code style="font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);">context.waitForEvent('page')</code>.
 - blocks:
-  - caption: The European Accessibility Act applies since June 2025. Thus this check belongs in the pipeline.
-    code: "const results = await new AxeBuilder({ page })\n  .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])\n  .analyze();\n\nawait testInfo.attach('axe-results.json', {\n  body: JSON.stringify(results.violations,\
-      \ null, 2),\n  contentType: 'application/json',\n});\n\nexpect(results.violations.map((v) => ({ rule: v.id, impact: v.impact }))).toEqual([]);\n"
-    filename: tests/accessibility.spec.ts
-    language: typescript
-    type: code
-  - text: axe-core finds 25% to 57% of the defects*. <span style="display:block;margin-top:8px;"><strong style="color:var(--text-accent);">Recommendation:</strong> test the rest by hand, with the keyboard
-      and a screen reader.</span>
-    title: Expectation management
-    type: callout
-    variant: warning
+  - type: columns
+    widths:
+    - 5.5
+    - 4.5
+    columns:
+    - - code: "const results = await new AxeBuilder({ page })\n  .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])\n  .analyze();\n\nexpect(\n  results.violations.map((v) => ({\n    rule:\
+          \ v.id,\n    impact: v.impact,\n    nodes: v.nodes.map((n) => n.target.join(' ')),\n  }))\n).toEqual([]);\n"
+        filename: tests/accessibility.spec.ts
+        language: typescript
+        type: code
+      - text: axe-core finds 25% to 57% of the defects*. The European Accessibility Act applies since June 2025. <span style="display:block;margin-top:8px;"><strong style="color:var(--text-accent);">Recommendation:</strong>
+          test the rest by hand, with the keyboard and a screen reader.</span>
+        title: Expectation management
+        type: callout
+        variant: warning
+    - - type: image
+        src: img/axe-error.png
+        alt: 'The failed test in the HTML report. axe-core finds three rules: button-name, color-contrast and label.'
   - text: <span style="font-size:13px;color:var(--text-secondary);">* <a href="https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues/" style="color:var(--text-trust);">Deque,
       57%</a> · <a href="http://adrianroselli.com/2023/01/comparing-manual-and-free-automated-wcag-reviews.html" style="color:var(--text-trust);">UK Government Digital Service tool audit, 30–40%</a> · <a
       href="https://karlgroves.com/web-accessibility-testing-what-can-be-tested-and-how/" style="color:var(--text-trust);">Karl Groves, 25–33%</a></span>
@@ -301,7 +325,6 @@ slides:
     language: csharp
     type: code
   - type: box
-    style: connector
     items:
     - label: Same
       text: Locators, Clock API, routes, traces, codegen, axe-core
@@ -331,7 +354,6 @@ slides:
       text: Explores and writes the first draft.
     - label: Human
       text: Reviews, then puts it in the pipeline.
-    style: connector
     title: The rule that works for us
     type: box
   - text: Let an agent write the first draft, not <code style="font-family:ui-monospace,'SF Mono',Consolas,'Courier New',monospace;font-size:0.95em;color:var(--text-primary);">playwright codegen</code>.
@@ -394,10 +416,6 @@ slides:
         items:
         - label: Tokens
           text: Commands only, no tool schema in the context
-        - label: Reach
-          text: Routes, clock and more pages in one call
-        - label: Repeat
-          text: The agent keeps the file and runs it again
         - label: Attach
           text: The agent uses your open Chrome, with your login
 - id: lessons
