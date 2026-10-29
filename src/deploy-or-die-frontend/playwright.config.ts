@@ -37,8 +37,8 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
-  globalSetup: require.resolve('./tests/global.setup'),
-  globalTeardown: require.resolve('./tests/global.teardown'),
+  globalSetup: require.resolve('./playwright/global.setup'),
+  globalTeardown: require.resolve('./playwright/global.teardown'),
 
   projects: [
     {

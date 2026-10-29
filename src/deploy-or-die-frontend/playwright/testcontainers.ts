@@ -50,7 +50,7 @@ export async function setup() {
     });
 
     // Get the backend port using podman port command
-    const portOutput = execSync('podman port tests-backend-1 5000', {
+    const portOutput = execSync('podman port playwright-backend-1 5000', {
       cwd: composeFilePath,
       encoding: 'utf-8'
     }).trim();

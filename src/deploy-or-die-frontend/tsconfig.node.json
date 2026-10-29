@@ -23,5 +23,5 @@
     // Node, so they need the Node globals (process, require, ...).
     "types": ["node"]
   },
-  "include": ["rspack.config.js", "playwright.config.ts", "tests"]
+  "include": ["rspack.config.js", "playwright.config.ts", "playwright", "tests"]
 }
