@@ -21,7 +21,7 @@ An update of the Webworker Meetup Saar 11/2025 talk (`../webworker-meetup-saar-1
 
 | Deck | File | Slides | Purpose |
 |---|---|---|---|
-| Talk deck (current) | `playwright-beyond-the-happy-path-it-tage-2026-12-09` | 20 | IT-Tage, 2026-12-09. 45 minutes, including an MCP demo slot. No Demo callouts. |
+| Talk deck (current) | `playwright-beyond-the-happy-path-it-tage-2026-12-09` | 20 | IT-Tage, 2026-12-09. The PDF starts with the conference title page. 45 minutes, including an MCP demo slot. No Demo callouts. |
 | Talk deck (earlier) | `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | 21 | .NET User Group Karlsruhe, 2026-09-24. Frozen. |
 | Content pool | `playwright-content-pool` | 34 | Every slide. Not tied to an event. A new talk deck takes the slides that it needs from here. |
 
@@ -81,6 +81,8 @@ All documents use the **vensas-doc-generator** (`../vensas-doc-generator`). They
 docs/
   playwright-beyond-the-happy-path-it-tage-2026-12-09.yaml   the current talk deck — 20 slides, theme dark
   playwright-beyond-the-happy-path-it-tage-2026-12-09.pdf    generated, do not edit
+  playwright-beyond-the-happy-path-it-tage-2026-12-09.title.pptx  the conference title page (IT-Tage template, filled in)
+  playwright-beyond-the-happy-path-it-tage-2026-12-09.title.pdf   the title page as PDF, 960 x 540 pt
   playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml   the earlier talk deck — frozen, do not change
   playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf    generated, frozen
   playwright-content-pool.yaml                               the content pool — 34 slides, theme dark
@@ -106,6 +108,37 @@ root after each change:
 
 A run with no target does not touch the Karlsruhe deck, because the generator rewrites the
 YAML file each time that it runs.
+
+### The conference title page
+
+IT-Tage asks for its own title page in front of the speaker's deck. The template is from the
+conference. The official session title is German: "Zuverlässige End-to-End-Tests mit
+Playwright: Von lokalem Debugging bis CI/CD". The deck itself stays English.
+
+When `docs/<deck>.title.pdf` exists, `generate-docs.sh` puts it in front of the generated
+deck with `pdfunite` (poppler). Thus the IT-Tage PDF has 21 pages: the title page, then the
+20 slides. The page number on a slide counts only the slides, so PDF page = slide + 1.
+
+The title page is not made on each run. After a change to the `.title.pptx`, make the PDF
+again. **Export it with PowerPoint, not with LibreOffice.** The city graphic is an EMF image,
+and LibreOffice draws it with a wrong green glow (the colors break). The `.odp` template has
+no such fault, but the export must come from the `.pptx`. The template page is 720 x 405 pt,
+thus Ghostscript scales it to the 960 x 540 pt of the deck:
+
+```sh
+# PowerPoint is sandboxed: it can only write into its own container folder.
+OUT=~/Library/Containers/com.microsoft.Powerpoint/Data/title.pdf
+osascript -e "tell application \"Microsoft PowerPoint\"
+  open POSIX file \"$PWD/docs/playwright-beyond-the-happy-path-it-tage-2026-12-09.title.pptx\"
+  save active presentation in POSIX file \"$OUT\" as save as PDF
+  close active presentation saving no
+end tell"
+gs -q -sDEVICE=pdfwrite -dDEVICEWIDTHPOINTS=960 -dDEVICEHEIGHTPOINTS=540 -dFIXEDMEDIA -dPDFFitPage \
+  -o docs/playwright-beyond-the-happy-path-it-tage-2026-12-09.title.pdf "$OUT"
+```
+
+Keep the title on two lines at 28 pt. At the 36 pt of the template it wraps into three lines
+and touches the graphic.
 
 The script finds its own directory, thus you can start it from any directory. It expects the
 generator beside this repository. Set `DOC_GENERATOR_DIR` to give a different path. It prints

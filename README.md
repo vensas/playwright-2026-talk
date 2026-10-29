@@ -6,11 +6,11 @@ Slides and demo project for the 2026 Playwright talk.
 
 ## Slides
 
-| Document                                              | Content                                                                                                        |
-|-------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `playwright-beyond-the-happy-path-it-tage-2026-12-09` | **The current talk deck** for IT-Tage 2026 in Frankfurt, 9 December 2026, 16:00–16:45.                         |
-| `playwright-beyond-the-happy-path-dnug-ka-2026-09-24` | The talk deck for .NET User Group Karlsruhe on 24 September 2026.                                              |
-| `playwright-content-pool`                             | **The content pool.** Every slide, not tied to an event. A talk deck takes the slides that it needs from here. |
+| Deck | PDF | Source | Content |
+|------|-----|--------|---------|
+| IT-Tage 2026 | [PDF](docs/playwright-beyond-the-happy-path-it-tage-2026-12-09.pdf) | [YAML](docs/playwright-beyond-the-happy-path-it-tage-2026-12-09.yaml) | **The current talk deck** for IT-Tage 2026 in Frankfurt, 9 December 2026, 16:00–16:45. |
+| .NET User Group Karlsruhe | [PDF](docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.pdf) | [YAML](docs/playwright-beyond-the-happy-path-dnug-ka-2026-09-24.yaml) | The talk deck for 24 September 2026. |
+| Content pool | [PDF](docs/playwright-content-pool.pdf) | [YAML](docs/playwright-content-pool.yaml) | **Every slide**, not tied to an event. A talk deck takes the slides that it needs from here. |
 
 The YAML files are the single source of truth. One command generates the PDFs:
 
@@ -20,6 +20,9 @@ The YAML files are the single source of truth. One command generates the PDFs:
 ./generate-docs.sh pool         # only the content pool
 ./generate-docs.sh dnug         # only the Karlsruhe deck
 ```
+
+The IT-Tage PDF starts with the title page of the conference (`docs/*.title.pdf`). The script
+puts it in front of the deck. This needs `pdfunite` from poppler.
 
 ## Demo project: "Deploy or Die"
 

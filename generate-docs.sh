@@ -15,6 +15,9 @@
 # The content pool holds every slide. A talk deck takes the slides that it
 # needs from the pool. A pool slide carries its Demo callout. A talk deck can
 # leave it out.
+#
+# A deck can have a title page from the conference: <deck>.title.pdf. The script
+# puts it in front of the generated deck. Its source is <deck>.title.pptx.
 
 set -euo pipefail
 
@@ -35,7 +38,7 @@ for arg in "$@"; do
     slides|deck)  TARGETS+=("$DECK") ;;
     dnug)         TARGETS+=("$DNUG_DECK") ;;
     pool)         TARGETS+=("$POOL") ;;
-    -h|--help)    sed -n '2,17p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)    sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)            echo "Unknown option: $arg. Use -h for help." >&2; exit 2 ;;
   esac
 done
@@ -98,6 +101,19 @@ for name in "${TARGETS[@]}"; do
     echo "FAILED — the generator reported success but wrote no PDF"
     failed=1
     continue
+  fi
+
+  # The conference title page goes in front of the deck. pdfunite comes with
+  # poppler.
+  title="$DOCS_DIR/$name.title.pdf"
+  if [ -f "$title" ]; then
+    if ! command -v pdfunite >/dev/null 2>&1; then
+      echo "FAILED — $name.title.pdf needs pdfunite (brew install poppler)"
+      failed=1
+      continue
+    fi
+    merged="$(mktemp).pdf"
+    pdfunite "$title" "$pdf" "$merged" && mv "$merged" "$pdf"
   fi
 
   size="$(du -k "$pdf" | cut -f1)"
